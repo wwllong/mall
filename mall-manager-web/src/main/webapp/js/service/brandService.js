@@ -10,7 +10,7 @@ app.service('brandService',function ($http) {
     }
 
     //修改
-    this.add = function (entity) {
+    this.update = function (entity) {
         return $http.post('../brand/update.do',entity);
     }
 
