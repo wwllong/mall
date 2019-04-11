@@ -67,7 +67,7 @@ public class BrandServiceImpl implements BrandService {
 			if(!StringUtils.isEmpty(brand.getName())){
 				criteria.andNameLike("%"+brand.getName()+"%");
 			}
-			if(!StringUtils.isEmpty(brand.getName())){
+			if(!StringUtils.isEmpty(brand.getFirstChar())){
 				criteria.andFirstCharEqualTo(brand.getFirstChar());
 			}
 		}

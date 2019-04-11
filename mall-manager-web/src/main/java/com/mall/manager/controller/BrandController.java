@@ -105,8 +105,7 @@ public class BrandController {
 	@RequestMapping("delete")
 	public Result delete(Long[] ids){
 		try {
-			ids = null;
-//			brandService.delete(ids);
+			brandService.delete(ids);
 			return new Result(true,Message.ADMIN_SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();

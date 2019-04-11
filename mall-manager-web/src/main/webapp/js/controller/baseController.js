@@ -21,6 +21,8 @@ app.controller('baseController', function($scope) {
         $scope.search( $scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage);
     }
 
+    $scope.isWatchCheck = false;
+
     /*监听全选checkbox*/
     $scope.watchCheckALL = function(){
         $scope.$watch("isSelectAll",function(newVal, oldVal){
@@ -50,17 +52,18 @@ app.controller('baseController', function($scope) {
         },true);
     }
 
-    $scope.watchCheckALL();
-    $scope.watchCheckList();
-
-    /*自定义H5表单验证信息*/
-    $scope.verify = function ($this, tip) {
-        if($this.validity.patternMismatch === true){
-            $this.setCustomValidity(tip);
-        }else{
-            $this.setCustomValidity("");
-        }
+    /*获取selectIds*/
+    $scope.getSelectId = function(){
+        let selectIds = [];
+        $scope.list.forEach( (value)=>{
+            if(value.isSelect){
+                selectIds.push(value.id);
+            }
+        });
+        return selectIds;
     }
+
+    $scope.requiredMsg = "必填选项";
 
     /*监听页面加载完成
     $scope.$watch('$viewContentLoaded', function() {
@@ -68,10 +71,3 @@ app.controller('baseController', function($scope) {
     });*/
 });
 
-function verify($this, tip) {
-    if($this.validity.patternMismatch === true){
-        $this.setCustomValidity(tip);
-    }else{
-        $this.setCustomValidity("");
-    }
-}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 
 	<head>
 		<meta charset="utf-8">
@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
 		<link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+
 		<link rel="stylesheet" href="../css/style.css">
 		<!-- 分页组件css -->
 		<link rel="stylesheet" href="../plugins/angularjs/module/pagination.css">
@@ -17,7 +18,7 @@
 	</head>
 
 
-	<body class="hold-transition skin-red sidebar-mini" ng-app="ebuy" ng-controller="brandController" ng-cloak >
+	<body class="hold-transition skin-red sidebar-mini" ng-app="mall" ng-controller="brandController" ng-cloak >
 		<!-- .box-body -->
 		<div class="box-header with-border">
 			<h3 class="box-title">品牌管理</h3>
@@ -27,7 +28,6 @@
 
 			<!-- 数据表格 -->
 			<div class="table-box">
-
 				<!--工具栏-->
 				<div class="pull-left">
 					<div class="form-group form-inline">
@@ -40,11 +40,9 @@
 				</div>
 				<div class="box-tools pull-right">
 					<form class="form-inline">
-						<div class="has-feedback form-group">
-							<input ng-model="searchEntity.name" class="form-control" placeholder="品牌名称" >
-							<input ng-model="searchEntity.firstChar" class="form-control" placeholder="品牌首字母" >
-							<button  class="btn btn-default"   ng-click="reloadList()">查询</button>
-						</div>
+						<input ng-model="searchEntity.name" class="form-control" placeholder="品牌名称" >
+						<input ng-model="searchEntity.firstChar" class="form-control" placeholder="品牌首字母" >
+						<button  class="btn btn-default"  ng-click="reloadList()">查询</button>
 					</form>
 				</div>
 				<!--工具栏/-->
@@ -69,7 +67,7 @@
 							<td>{{brand.name}}</td>
 							<td>{{brand.firstChar}}</td>
 							<td class="text-center">
-								<button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" ng-click="findOne(brand.id)">修改</button>
+									<button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" ng-click="findOne(brand.id)">修改</button>
 							</td>
 						</tr>
 					</tbody>
@@ -93,28 +91,42 @@
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 						<h3 id="myModalLabel">品牌编辑</h3>
 					</div>
-					<form ng-submit="save()">
+					<form ng-submit="save()" name="dataForm" novalidate >
 						<div class="modal-body">
 							<table class="table table-bordered table-striped" width="800px">
 								<tr>
 									<td>品牌名称</td>
 									<td>
-										<div class="form-group">
-											<input type="text" name="name" class="form-control" placeholder="品牌名称	">
-											<span class="help-block"></span>
+										<div class="form-group" ng-class="{ 'has-error' : dataForm.name.$invalid && dataForm.name.$touched }">
+											<label class="control-label sr-only" for="name"></label>
+											<input type="text" class="form-control" name="name" id="name" placeholder="品牌名称"
+												   ng-model="brand.name" required ng-minlength="2" ng-maxlength="7" >
+											<div class="help-block" ng-messages="dataForm.name.$error" ng-if="dataForm.name.$touched" >
+												<p ng-message="required" >{{requiredMsg}}</p>
+												<p ng-message="minlength" >名称太短，长度最小为2</p>
+												<p ng-message="maxlength" >名称太长，长度最大为7</p>
+											</div>
 										</div>
-
-										<input type="text" class="form-control" placeholder="品牌名称" ng-model="brand.name" required pattern="^[A-Za-z]$" oninput="verify(this,'请输入一个英文字母')" >
 									</td>
 								</tr>
 								<tr>
 									<td>首字母</td>
-									<td><input type="text" class="form-control" placeholder="首字母" ng-model="brand.firstChar" required pattern="^[A-Za-z]$" oninput="verify(this,'请输入一个英文字母')" > </td>
+									<td>
+										<div class="form-group" ng-class="{ 'has-error' : dataForm.firstChar.$invalid && dataForm.firstChar.$touched }">
+											<label class="control-label sr-only" for="firstChar"></label>
+											<input type="text" class="form-control" name="firstChar" id="firstChar" placeholder="首字母"
+												   ng-model="brand.firstChar" required ng-pattern="validate.rules.firstChar" >
+											<div class="help-block" ng-messages="dataForm.firstChar.$error" ng-if="dataForm.firstChar.$touched" >
+												<p ng-message="required" >{{requiredMsg}}</p>
+												<p ng-message="pattern" >{{validate.msg.firstChar}}</p>
+											</div>
+										</div>
+									</td>
 								</tr>
 							</table>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-success" aria-hidden="true" >保存</button>
+							<button type="submit" class="btn btn-success" aria-hidden="true" ng-disabled="dataForm.$invalid" >保存</button>
 							<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 						</div>
 					</form>
@@ -126,6 +138,7 @@
 		<script type="text/javascript" src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 		<script type="text/javascript" src="../plugins/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+		<script type="text/javascript" src="../plugins/angularjs/angular-messages.min.js"></script>
 		<script type="text/javascript" src="../plugins/iCheck/icheck.min.js"></script>
 		<script type="text/javascript" src="../plugins/layer/layer.js"></script>
 		<!-- 分页组件js -->

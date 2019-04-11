@@ -24,8 +24,8 @@
 	</mvc:annotation-driven>
 
 	<!-- 引用dubbo 服务 -->
-	<dubbo:application name="ebuy-shop-web" />
+	<dubbo:application name="mall-shop-web" />
 	<dubbo:registry address="zookeeper://192.168.25.129:2181"/>
-	<dubbo:annotation package="com.ebuy.shop.controller" />  	
+	<dubbo:annotation package="com.mall.shop.controller" />
 
 </beans>
