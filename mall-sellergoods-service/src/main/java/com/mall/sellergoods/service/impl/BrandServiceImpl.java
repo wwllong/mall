@@ -7,7 +7,7 @@ import com.mall.pojo.BrandExample.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.mall.dao.BrandDao;
+import com.mall.mapper.BrandMapper;
 import com.mall.pojo.Brand;
 import com.mall.sellergoods.service.BrandService;
 import com.github.pagehelper.Page;
@@ -20,30 +20,30 @@ import com.mall.utils.StringUtils;
 public class BrandServiceImpl implements BrandService {
 
 	@Autowired
-	private BrandDao brandDao;
+	private BrandMapper brandMapper;
 
 	/**增加*/
 	@Override
 	public void add(Brand brand) {
-		brandDao.insert(brand);
+		brandMapper.insert(brand);
 	}
 
 	/**更新*/
 	@Override
 	public void update(Brand brand) {
-		brandDao.updateByPrimaryKey(brand);
+		brandMapper.updateByPrimaryKey(brand);
 	}
 
 	/**根据ID获取实体*/
 	@Override
 	public Brand findOne(Long id) {
-		return brandDao.selectByPrimaryKey(id);
+		return brandMapper.selectByPrimaryKey(id);
 	}
 
 	/** 品牌列表*/
 	@Override
 	public List<Brand> findAll() {
-		return brandDao.selectByExample(null);
+		return brandMapper.selectByExample(null);
 	}
 
 	/** 品牌列表-分页*/
@@ -52,7 +52,7 @@ public class BrandServiceImpl implements BrandService {
 		//分页
 		PageHelper.startPage(pageNum, pageSize);
 
-		Page<Brand> page = (Page<Brand>) brandDao.selectByExample(null);
+		Page<Brand> page = (Page<Brand>) brandMapper.selectByExample(null);
 
 		return new PageResult(page.getTotal(),page.getResult());
 	}
@@ -71,7 +71,7 @@ public class BrandServiceImpl implements BrandService {
 				criteria.andFirstCharEqualTo(brand.getFirstChar());
 			}
 		}
-		Page<Brand> page = (Page<Brand>)brandDao.selectByExample(example);
+		Page<Brand> page = (Page<Brand>)brandMapper.selectByExample(example);
 		return new PageResult(page.getTotal(),page.getResult());
 	}
 
@@ -79,7 +79,7 @@ public class BrandServiceImpl implements BrandService {
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id : ids){
-			brandDao.deleteByPrimaryKey(id);
+			brandMapper.deleteByPrimaryKey(id);
 		}
 	}
 

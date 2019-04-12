@@ -19,4 +19,13 @@ public class StringUtils {
         return str == null || "".equals(str);
     }
 
+    /**
+     * @description 处理字符串
+     * @param str
+     * @return
+     */
+    public static Object processStr(String str){
+        return str == null ? null : str.trim();
+    }
+
 }
