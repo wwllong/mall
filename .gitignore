@@ -26,5 +26,5 @@ hs_err_pid*
 
 *.iml
 .idea
-db.properties
 
+/mall-dao/src/main/resources/properties/db.properties
