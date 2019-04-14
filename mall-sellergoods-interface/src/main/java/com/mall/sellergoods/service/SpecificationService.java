@@ -2,41 +2,42 @@ package com.mall.sellergoods.service;
 
 import java.util.List;
 
-import com.mall.pojo.Brand;
+import com.mall.pojo.Specification;
 
+import com.mall.pojogroup.SpecificationGroup;
 import common.pojo.PageResult;
 
 /**
- * 品牌服务接口
+ * 规格服务接口
  * @author Wwl
  *
  */
-public interface BrandService {
+public interface SpecificationService {
 
 	/**
 	 * 增加
-	 * @param brand
+	 * @param specificationGroup
 	 */
-	public void add(Brand brand);
+	public void add(SpecificationGroup specificationGroup);
 
 	/**
 	 * 修改
-	 * @param brand
+	 * @param specification
 	 */
-	public void update(Brand brand);
+	public void update(Specification specification);
 
 	/**
 	 * 根据Id获取实体
 	 * @param id
 	 * */
-	public Brand findOne(Long id);
+	public Specification findOne(Long id);
 
 	/**
 	 * 查询所有
 	 * @return
 	 */
-	public List<Brand> findAll();
-	
+	public List<Specification> findAll();
+
 	/**
 	 * 查询所有-分页
 	 * @param pageNum 当前页面
@@ -47,12 +48,12 @@ public interface BrandService {
 
 	/**
 	 * 根据条件查询，分页
-	 * @param brand
+	 * @param specification
 	 * @param pageNum 当前页面
 	 * @param pageSize 每页记录数
 	 * @return
 	 */
-	public PageResult findPage(Brand brand,int pageNum,int pageSize);
+	public PageResult findPage(Specification specification,int pageNum,int pageSize);
 
 	/**
 	 * 删除

@@ -1,6 +1,6 @@
 /**
  * 品牌服务层
- * Created by Wwl on 2019/3/4 0004.
+ * Created by Wwl on 2019/3/4
  */
 app.service('brandService',function ($http) {
 

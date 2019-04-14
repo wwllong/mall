@@ -26,4 +26,5 @@ hs_err_pid*
 
 *.iml
 .idea
+db.properties
 

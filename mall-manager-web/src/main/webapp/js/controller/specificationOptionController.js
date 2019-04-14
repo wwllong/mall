@@ -1,8 +1,8 @@
 /**
- * 品牌控制层
- * Created by Wwl on 2019/3/4
+ * 规格选项控制层
+ * Created by Wwl on 2019/3/14
  */
-app.controller('brandController', function($scope,$controller,brandService) {
+app.controller('specificationOptionController', function($scope,$controller,specificationOptionService) {
 
     $controller('baseController',{$scope:$scope});//继承
 
@@ -17,14 +17,14 @@ app.controller('brandController', function($scope,$controller,brandService) {
     }
 
     $scope.getList = function() {
-        brandService.findList().then(function(res) {
+        specificationOptionService.findList().then(function(res) {
                 $scope.list = res.data;
         });
     }
 
     //查询品牌列表-分页
     $scope.getListPage = function(page, size) {
-        brandService.findPage.then(function(res) {
+        specificationOptionService.findPage.then(function(res) {
             $scope.list = res.data.rows; //当前页数据
             $scope.paginationConf.totalItems = res.data.total; //总记录数
         });
@@ -33,10 +33,10 @@ app.controller('brandController', function($scope,$controller,brandService) {
     //保存
     $scope.save = function(){
         var serviceObj;
-        if($scope.brand.id != null){
-            serviceObj = brandService.update($scope.brand);
+        if($scope.specificationOption.id != null){
+            serviceObj = specificationOptionService.update($scope.specificationOption);
         }else{
-            serviceObj = brandService.add($scope.brand);
+            serviceObj = specificationOptionService.add($scope.specificationOption);
         }
         serviceObj.then(function(res){
             layer.msg(res.data.message);
@@ -50,8 +50,8 @@ app.controller('brandController', function($scope,$controller,brandService) {
 
     //查找实体
     $scope.findOne = function(id){
-        brandService.findOne(id).then(function(res){
-            $scope.brand = res.data;
+        specificationOptionService.findOne(id).then(function(res){
+            $scope.specificationOption = res.data;
         })
         .catch(err => console.log(err));
     }
@@ -64,7 +64,7 @@ app.controller('brandController', function($scope,$controller,brandService) {
             return;
         }else{
             layer.confirm(DEL_CONFIRM_TIPS, {icon: 3, title:TIPS}, function(index){
-                brandService.delete(selectIds).then(function(res){
+                specificationOptionService.delete(selectIds).then(function(res){
                     layer.msg(res.data.message);
                     if(res.data.success){
                         $scope.reloadList();
@@ -82,7 +82,7 @@ app.controller('brandController', function($scope,$controller,brandService) {
     //条件查询
     $scope.search = function (page,size) {
         /* angularJS 1.6+ */
-        brandService.search(page,size,$scope.searchEntity).then( function(res){
+        specificationOptionService.search(page,size,$scope.searchEntity).then( function(res){
             $scope.paginationConf.totalItems = res.data.total; //总记录数
             $scope.list = res.data.rows;//当前页数据
         })

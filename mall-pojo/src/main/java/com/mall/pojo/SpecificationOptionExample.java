@@ -3,14 +3,14 @@ package com.mall.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpecificationoptionExample {
+public class SpecificationOptionExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public SpecificationoptionExample() {
+    public SpecificationOptionExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 

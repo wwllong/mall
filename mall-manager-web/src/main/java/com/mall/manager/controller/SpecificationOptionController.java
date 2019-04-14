@@ -1,40 +1,33 @@
 package com.mall.manager.controller;
 
-import java.util.List;
-
-import common.pojo.Message;
-import common.pojo.Result;
-
 import org.apache.dubbo.config.annotation.Reference;
+import com.mall.pojo.SpecificationOption;
+import com.mall.sellergoods.service.SpecificationOptionService;
+import common.pojo.Message;
+import common.pojo.PageResult;
+import common.pojo.Result;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 
-import com.mall.pojo.Brand;
-import com.mall.sellergoods.service.BrandService;
-
-import common.pojo.PageResult;
-/**
- * 品牌控制层
- * @author Wwl
- */
 @RestController
-@RequestMapping("/brand")
-public class BrandController {
+@RequestMapping("/specificationOption")
+public class SpecificationOptionController {
 	
 	@Reference
-	private BrandService brandService;
+	private SpecificationOptionService specificationOptionService;
 
 	/**
 	 * 新增
-	 * @param brand
+	 * @param specificationOption
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody Brand brand){
+	public Result add(@RequestBody SpecificationOption specificationOption){
 		try {
-			brandService.add(brand);
+			specificationOptionService.add(specificationOption);
 			return  new Result(true, Message.ADMIN_SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -45,13 +38,13 @@ public class BrandController {
 
 	/**
 	 * 修改
-	 * @param brand
+	 * @param specificationOption
 	 * @return
 	 */
 	@RequestMapping("update")
-	public Result update(@RequestBody Brand brand){
+	public Result update(@RequestBody SpecificationOption specificationOption){
 		try {
-			brandService.update(brand);
+			specificationOptionService.update(specificationOption);
 			return new Result(true,Message.ADMIN_SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,8 +58,8 @@ public class BrandController {
 	 * @return
 	 */
 	@RequestMapping("findOne")
-	public Brand findOne(Long id){
-		return brandService.findOne(id);
+	public SpecificationOption findOne(Long id){
+		return specificationOptionService.findOne(id);
 	}
 
 	/**
@@ -74,8 +67,8 @@ public class BrandController {
 	 * @return
 	 */
 	@RequestMapping("/list")
-	public List<Brand> findAll(){
-		return brandService.findAll();
+	public List<SpecificationOption> findAll(){
+		return specificationOptionService.findAll();
 	}
 
 	/**
@@ -86,19 +79,19 @@ public class BrandController {
 	 */
 	@RequestMapping("/listByPage")
 	public PageResult findPage(int page, int size){
-		return brandService.findPage(page, size);
+		return specificationOptionService.findPage(page, size);
 	}
 
 	/**
 	 * 条件查询-分页
-	 * @param brand
+	 * @param specificationOption
 	 * @param page
 	 * @param size
 	 * @return
 	 */
 	@RequestMapping("/search")
-	public PageResult search(@RequestBody Brand brand, int page, int size){
-		return brandService.findPage(brand, page, size);
+	public PageResult search(@RequestBody SpecificationOption specificationOption, int page, int size){
+		return specificationOptionService.findPage(specificationOption, page, size);
 	}
 
 	/**
@@ -109,7 +102,7 @@ public class BrandController {
 	@RequestMapping("delete")
 	public Result delete(Long[] ids){
 		try {
-			brandService.delete(ids);
+			specificationOptionService.delete(ids);
 			return new Result(true,Message.ADMIN_SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();

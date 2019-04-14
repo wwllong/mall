@@ -1,6 +1,6 @@
 /**
  * 基础控制层
- * Created by Wwl on 2019/3/4 0004.
+ * Created by Wwl on 2019/3/4
  */
 app.controller('baseController', function($scope) {
 

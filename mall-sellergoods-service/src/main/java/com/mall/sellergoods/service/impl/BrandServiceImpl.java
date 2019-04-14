@@ -4,9 +4,10 @@ import java.util.List;
 
 import com.mall.pojo.BrandExample;
 import com.mall.pojo.BrandExample.Criteria;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.alibaba.dubbo.config.annotation.Service;
+
 import com.mall.mapper.BrandMapper;
 import com.mall.pojo.Brand;
 import com.mall.sellergoods.service.BrandService;
@@ -16,40 +17,40 @@ import com.github.pagehelper.PageHelper;
 import common.pojo.PageResult;
 import com.mall.utils.StringUtils;
 
+/**
+ * 品牌服务实现
+ * @author Wwl
+ *
+ */
 @Service
 public class BrandServiceImpl implements BrandService {
 
 	@Autowired
 	private BrandMapper brandMapper;
 
-	/**增加*/
 	@Override
 	public void add(Brand brand) {
 		brandMapper.insert(brand);
 	}
 
-	/**更新*/
 	@Override
 	public void update(Brand brand) {
 		brandMapper.updateByPrimaryKey(brand);
 	}
 
-	/**根据ID获取实体*/
 	@Override
 	public Brand findOne(Long id) {
 		return brandMapper.selectByPrimaryKey(id);
 	}
 
-	/** 品牌列表*/
 	@Override
 	public List<Brand> findAll() {
 		return brandMapper.selectByExample(null);
 	}
 
-	/** 品牌列表-分页*/
 	@Override
 	public PageResult findPage(int pageNum, int pageSize) {
-		//分页
+
 		PageHelper.startPage(pageNum, pageSize);
 
 		Page<Brand> page = (Page<Brand>) brandMapper.selectByExample(null);
@@ -57,7 +58,6 @@ public class BrandServiceImpl implements BrandService {
 		return new PageResult(page.getTotal(),page.getResult());
 	}
 
-	/** 品牌列表查询-分页*/
 	@Override
 	public PageResult findPage(Brand brand, int pageNum, int pageSize) {
 		PageHelper.startPage(pageNum,pageSize);
@@ -75,7 +75,6 @@ public class BrandServiceImpl implements BrandService {
 		return new PageResult(page.getTotal(),page.getResult());
 	}
 
-	/** 删除 */
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id : ids){

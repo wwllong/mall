@@ -44,7 +44,7 @@
 	</dependency>
 	<!-- dubbo相关 -->
 	<dependency>
-		<groupId>com.alibaba</groupId>
+		<groupId>org.apache.dubbo</groupId>
 		<artifactId>dubbo</artifactId>
 	</dependency>
 	<dependency>
@@ -52,8 +52,8 @@
 		<artifactId>zookeeper</artifactId>
 	</dependency>
 	<dependency>
-		<groupId>com.github.sgroschupf</groupId>
-		<artifactId>zkclient</artifactId>
+		<groupId>org.apache.curator</groupId>
+		<artifactId>curator-framework</artifactId>
 	</dependency>
 	<dependency>
 		<groupId>junit</groupId>
@@ -64,7 +64,7 @@
 		<artifactId>fastjson</artifactId>
 	</dependency>
 	<dependency>
-		<groupId>javassist</groupId>
+		<groupId>org.javassist</groupId>
 		<artifactId>javassist</artifactId>
 	</dependency>
 	<dependency>
