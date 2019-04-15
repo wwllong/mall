@@ -11,10 +11,12 @@
         http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <!-- 加载配置文件 -->
+    <context:property-placeholder location="classpath*:config/*.properties" />
 
-    <!--访问dubbo时，占用的端口，默认20880-->
-    <dubbo:protocol name="dubbo" port="20880"/>
-    <dubbo:application name="mall-sellergoods-service"/>
-    <dubbo:registry address="zookeeper://192.168.25.130:2181" client="curator"/>
+    <!-- dubbo-provider-config -->
+    <dubbo:protocol name="${dubbo.protocol.name}" port="${dubbo.protocol.port}"/>
+    <dubbo:application name="${dubbo.application.name}"/>
+    <dubbo:registry address="${dubbo.registry.address}" client="${dubbo.registry.client}"/>
     <dubbo:annotation package="com.mall.sellergoods.service.impl"/>
 </beans>

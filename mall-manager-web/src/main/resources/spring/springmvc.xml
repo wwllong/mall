@@ -29,7 +29,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <!-- 引用dubbo 服务 已过时 -->
+    <!-- dubbo 配置 -->
     <dubbo:application name="mall-manager-web"/>
     <dubbo:registry address="zookeeper://192.168.25.130:2181"/>
     <dubbo:annotation package="com.mall.manager.controller"/>
