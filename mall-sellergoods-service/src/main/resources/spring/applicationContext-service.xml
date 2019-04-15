@@ -11,7 +11,7 @@
         http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- 过时，ProviderConfiguration 配置 -->
+
     <!--访问dubbo时，占用的端口，默认20880-->
     <dubbo:protocol name="dubbo" port="20880"/>
     <dubbo:application name="mall-sellergoods-service"/>
