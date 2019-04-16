@@ -284,8 +284,8 @@
 		<module>mall-pojo</module>
 		<module>mall-dao</module>
 		<module>mall-common</module>
-		<module>mall-sellergoods-interface</module>
-		<module>mall-sellergoods-service</module>
+		<module>mall-goods-interface</module>
+		<module>mall-goods-service</module>
 		<module>mall-manager-web</module>
 		<module>mall-shop-web</module>
 	</modules>

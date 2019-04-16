@@ -9,10 +9,8 @@ app.controller('specificationController', function($scope,$controller,specificat
     //数据验证
     $scope.validate = {
         rules: {
-            firstChar:/^[A-Za-z]$/
         },
         msg:{
-            firstChar:"请填写一个大写或小写单词"
         }
     }
 
@@ -33,10 +31,10 @@ app.controller('specificationController', function($scope,$controller,specificat
     //保存
     $scope.save = function(){
         var serviceObj;
-        if($scope.specification.id != null){
-            serviceObj = specificationService.update($scope.specification);
+        if($scope.specificationGroup.id != null){
+            serviceObj = specificationService.update($scope.specificationGroup);
         }else{
-            serviceObj = specificationService.add($scope.specification);
+            serviceObj = specificationService.add($scope.specificationGroup);
         }
         serviceObj.then(function(res){
             layer.msg(res.data.message);
@@ -45,7 +43,7 @@ app.controller('specificationController', function($scope,$controller,specificat
             }
         })
         .catch(err => console.log(err));
-        angular.element("#editModal").modal('hide');
+        // angular.element("#editModal").modal('hide');
     }
 
     //查找实体
@@ -96,16 +94,16 @@ app.controller('specificationController', function($scope,$controller,specificat
         .catch(err => console.log(err));
     }
 
-    $scope.entity = {specificationOptionList:[]};
+    $scope.specificationGroup = {specificationOptionList:[]};
 
     //增加规格选项行
     $scope.addTableRow = function () {
-        $scope.entity.specificationOptionList.push({});
+        $scope.specificationGroup.specificationOptionList.push({});
     }
 
     //删除规格选项行
     $scope.delTableRow = function (index) {
-        $scope.entity.specificationOptionList.splice(index,1);
+        $scope.specificationGroup.specificationOptionList.splice(index,1);
     }
 
 });

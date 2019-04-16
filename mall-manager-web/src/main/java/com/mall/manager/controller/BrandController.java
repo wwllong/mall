@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.mall.pojo.Brand;
-import com.mall.sellergoods.service.BrandService;
+import com.mall.goods.service.BrandService;
 
 import common.pojo.PageResult;
 /**

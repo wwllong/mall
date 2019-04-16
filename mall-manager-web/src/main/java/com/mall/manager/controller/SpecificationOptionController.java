@@ -2,7 +2,7 @@ package com.mall.manager.controller;
 
 import org.apache.dubbo.config.annotation.Reference;
 import com.mall.pojo.SpecificationOption;
-import com.mall.sellergoods.service.SpecificationOptionService;
+import com.mall.goods.service.SpecificationOptionService;
 import common.pojo.Message;
 import common.pojo.PageResult;
 import common.pojo.Result;

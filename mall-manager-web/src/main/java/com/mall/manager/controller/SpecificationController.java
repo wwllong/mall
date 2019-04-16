@@ -3,7 +3,7 @@ package com.mall.manager.controller;
 import org.apache.dubbo.config.annotation.Reference;
 import com.mall.pojo.Specification;
 import com.mall.pojogroup.SpecificationGroup;
-import com.mall.sellergoods.service.SpecificationService;
+import com.mall.goods.service.SpecificationService;
 import common.pojo.Message;
 import common.pojo.PageResult;
 import common.pojo.Result;
@@ -63,7 +63,7 @@ public class SpecificationController {
 	 * @return
 	 */
 	@RequestMapping("findOne")
-	public Specification findOne(Long id){
+	public SpecificationGroup findOne(Long id){
 		return specificationService.findOne(id);
 	}
 
