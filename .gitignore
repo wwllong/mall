@@ -30,3 +30,4 @@ hs_err_pid*
 /mall-dao/src/main/resources/properties/db.properties
 /mall-manager-web/src/main/resources/config/application.properties
 /mall-sellergoods-service/src/main/resources/config/application.properties
+/target/*
