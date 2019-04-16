@@ -30,8 +30,8 @@ app.controller('specificationController', function($scope,$controller,specificat
 
     //保存
     $scope.save = function(){
-        var serviceObj;
-        if($scope.specificationGroup.id != null){
+        let serviceObj;
+        if($scope.specificationGroup.specification.id != null){
             serviceObj = specificationService.update($scope.specificationGroup);
         }else{
             serviceObj = specificationService.add($scope.specificationGroup);
@@ -49,7 +49,7 @@ app.controller('specificationController', function($scope,$controller,specificat
     //查找实体
     $scope.findOne = function(id){
         specificationService.findOne(id).then(function(res){
-            $scope.specification = res.data;
+            $scope.specificationGroup = res.data;
         })
         .catch(err => console.log(err));
     }
@@ -94,7 +94,7 @@ app.controller('specificationController', function($scope,$controller,specificat
         .catch(err => console.log(err));
     }
 
-    $scope.specificationGroup = {specificationOptionList:[]};
+    $scope.specificationGroup = {specification:{},specificationOptionList:[]};
 
     //增加规格选项行
     $scope.addTableRow = function () {

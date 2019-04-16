@@ -22,9 +22,9 @@ public interface SpecificationService {
 
 	/**
 	 * 修改
-	 * @param specification
+	 * @param specificationGroup
 	 */
-	public void update(Specification specification);
+	public void update(SpecificationGroup specificationGroup);
 
 	/**
 	 * 根据Id获取实体

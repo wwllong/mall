@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
+	<settings>
+		<setting name="logImpl" value="STDOUT_LOGGING"/>
+<!--		<setting name="logImpl" value="SLF4J" />-->
+		<!-- 在所有的SQL映射路径上加上“dao”这个前缀 -->
+		<setting name="logPrefix" value="dao."/>
+	</settings>
+
 	<plugins>
 		<!-- com.github.pagehelper 为 PageHelper 类所在包名 -->
 		<plugin interceptor="com.github.pagehelper.PageHelper">

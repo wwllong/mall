@@ -43,13 +43,13 @@ public class SpecificationController {
 
 	/**
 	 * 修改
-	 * @param specification
+	 * @param specificationGroup
 	 * @return
 	 */
 	@RequestMapping("update")
-	public Result update(@RequestBody Specification specification){
+	public Result update(@RequestBody SpecificationGroup specificationGroup){
 		try {
-			specificationService.update(specification);
+			specificationService.update(specificationGroup);
 			return new Result(true,Message.ADMIN_SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();

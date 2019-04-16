@@ -26,7 +26,8 @@
 		<security.version>3.2.3.RELEASE</security.version>		
 		<solrj.version>4.10.3</solrj.version>
 		<ik.version>2012_u6</ik.version>
-
+		<slf4j.version>1.7.21</slf4j.version>
+		<logback.version>1.1.7</logback.version>
 	</properties>
 	
 	<dependencyManagement>
@@ -35,6 +36,13 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
+				<exclusions>
+					<!-- avoiding Commons Logging -->
+					<exclusion>
+						<artifactId>commons-logging</artifactId>
+						<groupId>commons-logging</groupId>
+					</exclusion>
+				</exclusions>
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
@@ -127,8 +135,8 @@
 			<dependency>
 			    <groupId>com.github.pagehelper</groupId>
 			    <artifactId>pagehelper</artifactId>
-			    <version>${pagehelper.version}</version>
-			</dependency>		
+				<version>${pagehelper.version}</version>
+			</dependency>
 		  	<!-- Mybatis -->
 			<dependency>
 				<groupId>org.mybatis</groupId>
@@ -258,8 +266,31 @@
 	            <groupId>xml-apis</groupId>  
 	            <artifactId>xml-apis</artifactId>  
 	            <version>1.4.01</version>  
-	        </dependency> 		
-		</dependencies>	
+	        </dependency>
+
+			<!-- 日志文件管理包 -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.7.7</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.logback-extensions</groupId>
+				<artifactId>logback-ext-spring</artifactId>
+				<version>0.1.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>1.7.25</version>
+			</dependency>
+			<!-- log end -->
+		</dependencies>
 	
 	</dependencyManagement>
 

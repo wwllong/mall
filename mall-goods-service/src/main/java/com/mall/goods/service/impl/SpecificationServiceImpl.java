@@ -48,16 +48,33 @@ public class SpecificationServiceImpl implements SpecificationService {
 	}
 
 	@Override
-	public void update(Specification specification) {
+	public void update(SpecificationGroup specificationGroup) {
+
+		//修改规格
+		Specification specification = specificationGroup.getSpecification();
 		specificationMapper.updateByPrimaryKey(specification);
+
+		List<SpecificationOption> specificationOptionList = specificationGroup.getSpecificationOptionList();
+		//删除旧的规格详细数据
+		SpecificationOptionExample example = new SpecificationOptionExample();
+		SpecificationOptionExample.Criteria criteria = example.createCriteria();
+		criteria.andSpecIdEqualTo(specification.getId());
+		specificationOptionMapper.deleteByExample(example);
+
+		//添加新的规格详细
+		for(SpecificationOption specificationOption : specificationOptionList){
+			specificationOptionMapper.insert(specificationOption);
+		}
+		return;
 	}
 
 	@Override
 	public SpecificationGroup findOne(Long id) {
+		//规格
 		SpecificationGroup specificationGroup = new SpecificationGroup();
 		specificationGroup.setSpecification(specificationMapper.selectByPrimaryKey(id));
 
-		//规格详细
+		//规格相关选项详细
 		SpecificationOptionExample example = new SpecificationOptionExample();
 		SpecificationOptionExample.Criteria criteria = example.createCriteria();
 		criteria.andSpecIdEqualTo(id);
@@ -99,7 +116,14 @@ public class SpecificationServiceImpl implements SpecificationService {
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id : ids){
+			//删除规格
 			specificationMapper.deleteByPrimaryKey(id);
+
+			//删除规格选项
+			SpecificationOptionExample example = new SpecificationOptionExample();
+			SpecificationOptionExample.Criteria criteria = example.createCriteria();
+			criteria.andSpecIdEqualTo(id);
+			specificationOptionMapper.deleteByExample(example);
 		}
 	}
 
