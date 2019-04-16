@@ -27,7 +27,6 @@ hs_err_pid*
 *.iml
 .idea
 
-/mall-dao/src/main/resources/properties/db.properties
-/mall-manager-web/src/main/resources/config/application.properties
-/mall-sellergoods-service/src/main/resources/config/application.properties
-/target/*
+
+/mall-dao/src/main/resources/config/db.properties
+/mall-dao/target/
