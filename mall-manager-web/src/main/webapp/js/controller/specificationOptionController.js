@@ -8,12 +8,8 @@ app.controller('specificationOptionController', function($scope,$controller,spec
 
     //数据验证
     $scope.validate = {
-        rules: {
-            firstChar:/^[A-Za-z]$/
-        },
-        msg:{
-            firstChar:"请填写一个大写或小写单词"
-        }
+        rules: { },
+        msg:{ }
     }
 
     $scope.getList = function() {

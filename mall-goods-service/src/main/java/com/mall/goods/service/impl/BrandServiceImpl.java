@@ -1,6 +1,7 @@
 package com.mall.goods.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import com.mall.pojo.BrandExample;
 import com.mall.pojo.BrandExample.Criteria;
@@ -80,6 +81,11 @@ public class BrandServiceImpl implements BrandService {
 		for(Long id : ids){
 			brandMapper.deleteByPrimaryKey(id);
 		}
+	}
+
+	@Override
+	public List<Map> findOptionList() {
+		return brandMapper.selectOptionList();
 	}
 
 }

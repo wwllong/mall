@@ -1,6 +1,7 @@
 package com.mall.manager.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import common.pojo.Message;
 import common.pojo.Result;
@@ -115,5 +116,14 @@ public class BrandController {
 			e.printStackTrace();
 			return new Result(false,Message.ADMIN_FAIL);
 		}
+	}
+
+	/**
+	 * 下拉列表
+	 * @return
+	 */
+	@RequestMapping("findOptionList")
+	public List<Map> findOptionList(){
+		return brandService.findOptionList();
 	}
 }

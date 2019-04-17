@@ -20,8 +20,4 @@ public class Specification implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public void setSpecName(String specName) {
-        this.specName = specName == null ? null : specName.trim();
-    }
-
 }

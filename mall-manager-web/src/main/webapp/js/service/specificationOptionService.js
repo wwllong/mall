@@ -39,9 +39,4 @@ app.service('specificationOptionService',function ($http) {
         return $http.post('../specificationOption/search.do?page='+page+'&size='+size,searchEntity);
     }
 
-    //下拉列表数据
-    this.selectOptionList = function () {
-        return $http.get('../specificationOption/selectOptionList.do');
-    }
-
 });

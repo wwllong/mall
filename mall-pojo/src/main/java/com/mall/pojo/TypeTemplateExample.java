@@ -3,14 +3,14 @@ package com.mall.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TypetemplateExample {
+public class TypeTemplateExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public TypetemplateExample() {
+    public TypeTemplateExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 

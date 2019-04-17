@@ -3,6 +3,8 @@ package com.mall.mapper;
 import com.mall.pojo.Brand;
 import com.mall.pojo.BrandExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface BrandMapper {
@@ -27,4 +29,6 @@ public interface BrandMapper {
     int updateByPrimaryKeySelective(Brand record);
 
     int updateByPrimaryKey(Brand record);
+
+    List<Map> selectOptionList();
 }

@@ -17,6 +17,7 @@ import common.pojo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 规格服务实现
@@ -125,6 +126,11 @@ public class SpecificationServiceImpl implements SpecificationService {
 			criteria.andSpecIdEqualTo(id);
 			specificationOptionMapper.deleteByExample(example);
 		}
+	}
+
+	@Override
+	public List<Map> findOptionList() {
+		return specificationMapper.selectOptionList();
 	}
 
 }

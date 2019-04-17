@@ -24,8 +24,4 @@ public class SpecificationOption implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public void setOptionName(String optionName) {
-        this.optionName = optionName == null ? null : optionName.trim();
-    }
-
 }

@@ -6,19 +6,23 @@ import java.io.Serializable;
 
 /**
  * @author Jack Wen.
- * @ClassName Brand
- * @dsecription 品牌类
+ * @ClassName TypeTemplate
+ * @dsecription 商品类型模板类
  * @data 2019/4/11
  * @Vserion 1.0
  */
 
 @Data
-public class Brand implements Serializable {
+public class TypeTemplate implements Serializable {
     private Long id;
 
     private String name;
 
-    private String firstChar;
+    private String specIds;
+
+    private String brandIds;
+
+    private String customAttributeItems;
 
     private static final long serialVersionUID = 1L;
 

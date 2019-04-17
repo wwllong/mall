@@ -8,10 +8,8 @@ app.controller('specificationController', function($scope,$controller,specificat
 
     //数据验证
     $scope.validate = {
-        rules: {
-        },
-        msg:{
-        }
+        rules: { },
+        msg:{ }
     }
 
     $scope.getList = function() {

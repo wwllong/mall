@@ -40,8 +40,8 @@ app.service('specificationService',function ($http) {
     }
 
     //下拉列表数据
-    this.selectOptionList = function () {
-        return $http.get('../specification/selectOptionList.do');
+    this.findSpecList = function () {
+        return $http.get('../specification/findOptionList.do');
     }
 
 });

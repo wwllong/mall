@@ -1,6 +1,7 @@
 package com.mall.goods.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.mall.pojo.Brand;
 
@@ -59,5 +60,11 @@ public interface BrandService {
 	 * @return
 	 */
 	public void delete(Long[] ids);
+
+	/**
+	 * 下拉列表
+	 * @return
+	 */
+	public List<Map> findOptionList();
 
 }

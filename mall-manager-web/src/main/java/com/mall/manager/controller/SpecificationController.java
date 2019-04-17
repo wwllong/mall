@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 规格控制层
@@ -113,5 +114,14 @@ public class SpecificationController {
 			e.printStackTrace();
 			return new Result(false,Message.ADMIN_FAIL);
 		}
+	}
+
+	/**
+	 * 下拉列表
+	 * @return
+	 */
+	@RequestMapping("findOptionList")
+	public List<Map> findOptionList(){
+		return specificationService.findOptionList();
 	}
 }
