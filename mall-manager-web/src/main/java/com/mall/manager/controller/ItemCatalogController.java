@@ -1,7 +1,7 @@
 package com.mall.manager.controller;
 
-import com.mall.goods.service.TypeTemplateService;
-import com.mall.pojo.TypeTemplate;
+import com.mall.goods.service.ItemCatalogService;
+import com.mall.pojo.ItemCatalog;
 import common.pojo.Message;
 import common.pojo.PageResult;
 import common.pojo.Result;
@@ -14,25 +14,25 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 商品类型模板控制层
+ * 商品分类控制层
  * @author Wwl
  */
 @RestController
-@RequestMapping("/typeTemplate")
-public class TypeTemplateController {
+@RequestMapping("/itemCatalog")
+public class ItemCatalogController {
 	
 	@Reference
-	private TypeTemplateService typeTemplateService;
+	private ItemCatalogService itemCatalogService;
 
 	/**
 	 * 新增
-	 * @param typeTemplate
+	 * @param itemCatalog
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody TypeTemplate typeTemplate){
+	public Result add(@RequestBody ItemCatalog itemCatalog){
 		try {
-			typeTemplateService.add(typeTemplate);
+			itemCatalogService.add(itemCatalog);
 			return  new Result(true, Message.ADMIN_SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -43,13 +43,13 @@ public class TypeTemplateController {
 
 	/**
 	 * 修改
-	 * @param typeTemplate
+	 * @param itemCatalog
 	 * @return
 	 */
 	@RequestMapping("update")
-	public Result update(@RequestBody TypeTemplate typeTemplate){
+	public Result update(@RequestBody ItemCatalog itemCatalog){
 		try {
-			typeTemplateService.update(typeTemplate);
+			itemCatalogService.update(itemCatalog);
 			return new Result(true,Message.ADMIN_SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -63,8 +63,8 @@ public class TypeTemplateController {
 	 * @return
 	 */
 	@RequestMapping("findOne")
-	public TypeTemplate findOne(Long id){
-		return typeTemplateService.findOne(id);
+	public ItemCatalog findOne(Long id){
+		return itemCatalogService.findOne(id);
 	}
 
 	/**
@@ -72,8 +72,8 @@ public class TypeTemplateController {
 	 * @return
 	 */
 	@RequestMapping("/list")
-	public List<TypeTemplate> findAll(){
-		return typeTemplateService.findAll();
+	public List<ItemCatalog> findAll(){
+		return itemCatalogService.findAll();
 	}
 
 	/**
@@ -84,19 +84,19 @@ public class TypeTemplateController {
 	 */
 	@RequestMapping("/listByPage")
 	public PageResult findPage(int page, int size){
-		return typeTemplateService.findPage(page, size);
+		return itemCatalogService.findPage(page, size);
 	}
 
 	/**
 	 * 条件查询-分页
-	 * @param typeTemplate
+	 * @param itemCatalog
 	 * @param page
 	 * @param size
 	 * @return
 	 */
 	@RequestMapping("/search")
-	public PageResult search(@RequestBody TypeTemplate typeTemplate, int page, int size){
-		return typeTemplateService.findPage(typeTemplate, page, size);
+	public PageResult search(@RequestBody ItemCatalog itemCatalog, int page, int size){
+		return itemCatalogService.findPage(itemCatalog, page, size);
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class TypeTemplateController {
 	@RequestMapping("delete")
 	public Result delete(Long[] ids){
 		try {
-			typeTemplateService.delete(ids);
+			itemCatalogService.delete(ids);
 			return new Result(true,Message.ADMIN_SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,11 +116,13 @@ public class TypeTemplateController {
 	}
 
 	/**
-	 * 下拉列表
+	 * 根据父ID查询列表
+	 * @param parentId
 	 * @return
 	 */
-	@RequestMapping("findOptionList")
-	public List<Map> findOptionList(){
-		return typeTemplateService.findOptionList();
+	@RequestMapping("findByParentId")
+	public List<ItemCatalog> findByParentId(Long parentId){
+		return itemCatalogService.findByParentId(parentId);
 	}
+
 }

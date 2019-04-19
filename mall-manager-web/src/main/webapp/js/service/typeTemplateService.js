@@ -25,4 +25,7 @@ app.service('typeTemplateService',function($http){
     //搜索
     this.search = (page,size,searchEntity) => $http.post('../typeTemplate/search.do?page='+page+'&size='+size,searchEntity);
 
+    //下拉列表数据
+    this.findOptionList = () => $http.get('../typeTemplate/findOptionList.do');
+
 });

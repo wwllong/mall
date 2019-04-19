@@ -5,6 +5,7 @@ import com.mall.pojo.TypeTemplateExample;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TypeTemplateMapper {
     long countByExample(TypeTemplateExample example);
@@ -28,4 +29,6 @@ public interface TypeTemplateMapper {
     int updateByPrimaryKeySelective(TypeTemplate record);
 
     int updateByPrimaryKey(TypeTemplate record);
+
+    List<Map> selectOptionList();
 }

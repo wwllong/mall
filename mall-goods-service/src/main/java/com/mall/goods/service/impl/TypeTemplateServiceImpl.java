@@ -13,6 +13,7 @@ import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品类型模板服务
@@ -74,6 +75,11 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 		for(Long id : ids){
 			typeTemplateMapper.deleteByPrimaryKey(id);
 		}
+	}
+
+	@Override
+	public List<Map> findOptionList() {
+		return typeTemplateMapper.selectOptionList();
 	}
 
 }

@@ -14,7 +14,7 @@ app.controller('specificationController', function($scope,$controller,specificat
 
     $scope.getList = function() {
         specificationService.findList().then(function(res) {
-                $scope.list = res.data;
+            $scope.list = res.data;
         });
     }
 
@@ -83,11 +83,7 @@ app.controller('specificationController', function($scope,$controller,specificat
             $scope.list = res.data.rows;//当前页数据
         })
         .then(() => {
-            if(!$scope.isWatchCheck){
-                $scope.watchCheckALL();
-                $scope.watchCheckList();
-                $scope.isWatchCheck = true;
-            }
+            $scope.watchCheck();
         })
         .catch(err => console.log(err));
     }

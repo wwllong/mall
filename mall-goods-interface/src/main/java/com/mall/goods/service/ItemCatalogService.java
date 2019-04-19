@@ -1,41 +1,41 @@
 package com.mall.goods.service;
 
-import com.mall.pojo.TypeTemplate;
+import com.mall.pojo.ItemCatalog;
 import common.pojo.PageResult;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * 商品类型模板服务接口
+ * 商品目录/分类服务接口
  * @author Wwl
  *
  */
-public interface TypeTemplateService {
+public interface ItemCatalogService {
 
 	/**
 	 * 增加
-	 * @param typeTemplate
+	 * @param catalog
 	 */
-	public void add(TypeTemplate typeTemplate);
+	public void add(ItemCatalog catalog);
 
 	/**
 	 * 修改
-	 * @param typeTemplate
+	 * @param catalog
 	 */
-	public void update(TypeTemplate typeTemplate);
+	public void update(ItemCatalog catalog);
 
 	/**
 	 * 根据Id获取实体
 	 * @param id
 	 * */
-	public TypeTemplate findOne(Long id);
+	public ItemCatalog findOne(Long id);
 
 	/**
 	 * 查询所有
 	 * @return
 	 */
-	public List<TypeTemplate> findAll();
+	public List<ItemCatalog> findAll();
 	
 	/**
 	 * 查询所有-分页
@@ -47,12 +47,12 @@ public interface TypeTemplateService {
 
 	/**
 	 * 根据条件查询，分页
-	 * @param typeTemplate
+	 * @param catalog
 	 * @param pageNum 当前页面
 	 * @param pageSize 每页记录数
 	 * @return
 	 */
-	public PageResult findPage(TypeTemplate typeTemplate, int pageNum, int pageSize);
+	public PageResult findPage(ItemCatalog catalog, int pageNum, int pageSize);
 
 	/**
 	 * 删除
@@ -61,9 +61,10 @@ public interface TypeTemplateService {
 	public void delete(Long[] ids);
 
 	/**
-	 * 下拉列表
+	 * 根据父ID查询列表
+	 * @param id
 	 * @return
 	 */
-	public List<Map> findOptionList();
+	public List<ItemCatalog> findByParentId(Long id);
 
 }

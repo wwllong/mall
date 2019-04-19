@@ -78,6 +78,14 @@ app.controller('baseController', function($scope) {
         return joinVal;
     }
 
+    //监控icheck
+    $scope.watchCheck = function () {
+        if(!$scope.isWatchCheck){
+            $scope.watchCheckALL();
+            $scope.watchCheckList();
+            $scope.isWatchCheck = true;
+        }
+    }
     /*监听页面加载完成
     $scope.$watch('$viewContentLoaded', function() {
 

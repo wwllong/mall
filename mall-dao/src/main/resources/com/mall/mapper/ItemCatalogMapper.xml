@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mall.mapper.TypeTemplateMapper">
-  <resultMap id="BaseResultMap" type="com.mall.pojo.TypeTemplate">
+<mapper namespace="com.mall.mapper.ItemCatalogMapper">
+  <resultMap id="BaseResultMap" type="com.mall.pojo.ItemCatalog">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="spec_ids" jdbcType="VARCHAR" property="specIds" />
-    <result column="brand_ids" jdbcType="VARCHAR" property="brandIds" />
-    <result column="custom_attribute_items" jdbcType="VARCHAR" property="customAttributeItems" />
+    <result column="type_id" jdbcType="BIGINT" property="typeId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,15 +66,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, spec_ids, brand_ids, custom_attribute_items
+    id, parent_id, name, type_id
   </sql>
-  <select id="selectByExample" parameterType="com.mall.pojo.TypeTemplateExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.mall.pojo.ItemCatalogExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_type_template
+    from tb_item_catalog
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,85 +85,76 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from tb_type_template
+    from tb_item_catalog
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from tb_type_template
+    delete from tb_item_catalog
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.mall.pojo.TypeTemplateExample">
-    delete from tb_type_template
+  <delete id="deleteByExample" parameterType="com.mall.pojo.ItemCatalogExample">
+    delete from tb_item_catalog
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.mall.pojo.TypeTemplate">
-    insert into tb_type_template (id, name, spec_ids, 
-      brand_ids, custom_attribute_items)
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{specIds,jdbcType=VARCHAR}, 
-      #{brandIds,jdbcType=VARCHAR}, #{customAttributeItems,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.mall.pojo.ItemCatalog">
+    insert into tb_item_catalog (id, parent_id, name, 
+      type_id)
+    values (#{id,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{typeId,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.mall.pojo.TypeTemplate">
-    insert into tb_type_template
+  <insert id="insertSelective" parameterType="com.mall.pojo.ItemCatalog">
+    insert into tb_item_catalog
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
       <if test="name != null">
         name,
       </if>
-      <if test="specIds != null">
-        spec_ids,
-      </if>
-      <if test="brandIds != null">
-        brand_ids,
-      </if>
-      <if test="customAttributeItems != null">
-        custom_attribute_items,
+      <if test="typeId != null">
+        type_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
+      </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="specIds != null">
-        #{specIds,jdbcType=VARCHAR},
-      </if>
-      <if test="brandIds != null">
-        #{brandIds,jdbcType=VARCHAR},
-      </if>
-      <if test="customAttributeItems != null">
-        #{customAttributeItems,jdbcType=VARCHAR},
+      <if test="typeId != null">
+        #{typeId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.mall.pojo.TypeTemplateExample" resultType="java.lang.Long">
-    select count(*) from tb_type_template
+  <select id="countByExample" parameterType="com.mall.pojo.ItemCatalogExample" resultType="java.lang.Long">
+    select count(*) from tb_item_catalog
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update tb_type_template
+    update tb_item_catalog
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
+      <if test="record.parentId != null">
+        parent_id = #{record.parentId,jdbcType=BIGINT},
+      </if>
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.specIds != null">
-        spec_ids = #{record.specIds,jdbcType=VARCHAR},
-      </if>
-      <if test="record.brandIds != null">
-        brand_ids = #{record.brandIds,jdbcType=VARCHAR},
-      </if>
-      <if test="record.customAttributeItems != null">
-        custom_attribute_items = #{record.customAttributeItems,jdbcType=VARCHAR},
+      <if test="record.typeId != null">
+        type_id = #{record.typeId,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -172,43 +162,35 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update tb_type_template
+    update tb_item_catalog
     set id = #{record.id,jdbcType=BIGINT},
+      parent_id = #{record.parentId,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
-      spec_ids = #{record.specIds,jdbcType=VARCHAR},
-      brand_ids = #{record.brandIds,jdbcType=VARCHAR},
-      custom_attribute_items = #{record.customAttributeItems,jdbcType=VARCHAR}
+      type_id = #{record.typeId,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mall.pojo.TypeTemplate">
-    update tb_type_template
+  <update id="updateByPrimaryKeySelective" parameterType="com.mall.pojo.ItemCatalog">
+    update tb_item_catalog
     <set>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="specIds != null">
-        spec_ids = #{specIds,jdbcType=VARCHAR},
-      </if>
-      <if test="brandIds != null">
-        brand_ids = #{brandIds,jdbcType=VARCHAR},
-      </if>
-      <if test="customAttributeItems != null">
-        custom_attribute_items = #{customAttributeItems,jdbcType=VARCHAR},
+      <if test="typeId != null">
+        type_id = #{typeId,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.mall.pojo.TypeTemplate">
-    update tb_type_template
-    set name = #{name,jdbcType=VARCHAR},
-      spec_ids = #{specIds,jdbcType=VARCHAR},
-      brand_ids = #{brandIds,jdbcType=VARCHAR},
-      custom_attribute_items = #{customAttributeItems,jdbcType=VARCHAR}
+  <update id="updateByPrimaryKey" parameterType="com.mall.pojo.ItemCatalog">
+    update tb_item_catalog
+    set parent_id = #{parentId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectOptionList" resultType="java.util.Map">
-    select id,name as text from tb_type_template
-  </select>
 </mapper>
