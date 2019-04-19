@@ -29,6 +29,7 @@ public class SellerServiceImpl implements SellerService {
 
 	@Override
 	public void add(Seller seller) {
+		seller.setStatus("0");
 		seller.setCreateTime(new Date());
 		sellerMapper.insert(seller);
 	}
@@ -140,6 +141,14 @@ public class SellerServiceImpl implements SellerService {
 		for(String id : ids){
 			sellerMapper.deleteByPrimaryKey(id);
 		}
+	}
+
+	@Override
+	public void updateStatus(String sellerId, String status) {
+		Seller seller = new Seller();
+		seller.setSellerId(sellerId);
+		seller.setStatus(status);
+		sellerMapper.updateByPrimaryKeySelective(seller);
 	}
 
 

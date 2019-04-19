@@ -9,12 +9,12 @@
 	<!-- 集中定义依赖版本号 -->
 	<properties>
 		<junit.version>4.12</junit.version>
-		<spring.version>4.3.10.RELEASE</spring.version>
+		<spring.version>4.2.4.RELEASE</spring.version>
 		<pagehelper.version>4.0.0</pagehelper.version>
 		<servlet-api.version>3.1.0</servlet-api.version>
 		<dubbo.version>2.7.0</dubbo.version>
 		<zookeeper.version>3.4.14</zookeeper.version>
-		<curator.version>4.0.0</curator.version>
+		<curator.version>2.12.0</curator.version>
 		<mybatis.version>3.2.8</mybatis.version>
 		<mybatis.spring.version>1.2.2</mybatis.spring.version>
 		<mybatis.paginator.version>1.2.15</mybatis.paginator.version>
@@ -28,6 +28,7 @@
 		<ik.version>2012_u6</ik.version>
 		<slf4j.version>1.7.21</slf4j.version>
 		<logback.version>1.1.7</logback.version>
+		<security.version>4.2.12.RELEASE</security.version>
 	</properties>
 	
 	<dependencyManagement>
@@ -201,12 +202,12 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
-				<version>4.1.0.RELEASE</version>
+				<version>${security.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
-				<version>4.1.0.RELEASE</version>
+				<version>${security.version}</version>
 			</dependency>		
 			<dependency>
 			    <groupId>com.github.penggle</groupId>

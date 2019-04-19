@@ -1,57 +1,61 @@
 /**
- * 品牌控制层
- * Created by Wwl on 2019/3/4
+ * 卖家控制层
+ * Created by Wwl on 2019/4/18
  */
-app.controller('brandController', function($scope,$controller,brandService) {
+app.controller('sellerController', function($scope,$controller,sellerService,$timeout) {
 
     $controller('baseController',{$scope:$scope});//继承
 
+    $scope.isAgree = true;
     //数据验证
     $scope.validate = {
         rules: {
-            firstChar:/^[A-Za-z]$/
+            password:/^[a-zA-Z]\w{5,17}$/
         },
         msg:{
-            firstChar:"请填写一个大写或小写单词"
+            password:"以字母开头，长度在5~17 之间，只能包含字符、数字和下划线"
         }
     }
 
     $scope.getList = function() {
-        brandService.findList().then(function(res) {
+        sellerService.findList().then(function(res) {
                 $scope.list = res.data;
         });
     }
 
     //查询品牌列表-分页
     $scope.getListPage = function(page, size) {
-        brandService.findPage.then(function(res) {
+        sellerService.findPage.then(function(res) {
             $scope.list = res.data.rows; //当前页数据
             $scope.paginationConf.totalItems = res.data.total; //总记录数
         });
     }
 
-    //保存
-    $scope.save = function(){
-        let serviceObj;
-        if($scope.brand.id != null){
-            serviceObj = brandService.update($scope.brand);
-        }else{
-            serviceObj = brandService.add($scope.brand);
+    //新增-申请入驻
+    $scope.add = function(){
+        if(!$scope.isAgree){
+            layer.msg("请勾选同意协议");
+            return;
         }
+        let serviceObj=sellerService.add($scope.seller);
         serviceObj.then(function(res){
-            layer.msg(res.data.message);
             if(res.data.success){
-                $scope.reloadList();
+                layer.msg("申请成功，请等待运营商审核结果。</br>5秒后将跳转到登陆页。");
+                $timeout(function () {
+                    location.href = "shoplogin.html";
+                },5000);
+            }else{
+                layer.msg(res.data.message);
             }
+
         })
         .catch(err => console.log(err));
-        angular.element("#editModal").modal('hide');
     }
 
     //查找实体
     $scope.findOne = function(id){
-        brandService.findOne(id).then(function(res){
-            $scope.brand = res.data;
+        sellerService.findOne(id).then(function(res){
+            $scope.seller = res.data;
         })
         .catch(err => console.log(err));
     }
@@ -64,7 +68,7 @@ app.controller('brandController', function($scope,$controller,brandService) {
             return;
         }else{
             layer.confirm(DEL_CONFIRM_TIPS, {icon: 3, title:TIPS}, function(index){
-                brandService.delete(selectIds).then(function(res){
+                sellerService.delete(selectIds).then(function(res){
                     layer.msg(res.data.message);
                     if(res.data.success){
                         $scope.reloadList();
@@ -82,7 +86,7 @@ app.controller('brandController', function($scope,$controller,brandService) {
     //条件查询
     $scope.search = function (page,size) {
         /* angularJS 1.6+ */
-        brandService.search(page,size,$scope.searchEntity).then( function(res){
+        sellerService.search(page,size,$scope.searchEntity).then( function(res){
             $scope.paginationConf.totalItems = res.data.total; //总记录数
             $scope.list = res.data.rows;//当前页数据
         })
@@ -95,5 +99,17 @@ app.controller('brandController', function($scope,$controller,brandService) {
         })
         .catch(err => console.log(err));
     }
+
+    //更新状态
+    $scope.updateStatus = function (sellerId, status) {
+        sellerService.updateStatus(sellerId,status).then( res =>{
+            layer.msg(res.data.message);
+            if(res.data.success){
+                $scope.reloadList();
+            }
+        })
+        .catch(err => console.log(err));
+    }
+
 
 });

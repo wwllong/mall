@@ -6,23 +6,24 @@
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
     <!-- 设置放行的资源 -->
-    <http pattern="/*.html" security="none"></http>
-    <http pattern="/css/**" security="none"></http>
-    <http pattern="/img/**" security="none"></http>
-    <http pattern="/js/**" security="none"></http>
-    <http pattern="/plugins/**" security="none"></http>
+    <http pattern="/*.html" security="none"/>
+    <http pattern="/css/**" security="none"/>
+    <http pattern="/img/**" security="none"/>
+    <http pattern="/js/**" security="none"/>
+    <http pattern="/plugins/**" security="none"/>
 
     <!-- 页面的拦截规则 -->
     <http use-expressions="false">
         <intercept-url pattern="/**" access="ROLE_ADMIN"/>
         <!-- 开启表单登陆功能 -->
-        <form-login login-page="/login.html" default-target-url="/admin/index.html" authentication-failure-url="/login.html" always-use-default-target="true"/>
+        <form-login login-page="/login.html" default-target-url="/admin/index.html"
+                    authentication-failure-url="/login.html" always-use-default-target="true"/>
         <csrf disabled="true"/>
         <headers>
             <!-- 框架页允许 -->
             <frame-options policy="SAMEORIGIN"/>
         </headers>
-        <logout />
+        <logout/>
     </http>
 
     <!-- 认证管理器 -->

@@ -4,7 +4,6 @@ import com.mall.pojo.Seller;
 import common.pojo.PageResult;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 商家/卖家服务接口
@@ -59,5 +58,12 @@ public interface SellerService {
 	 * @return
 	 */
 	public void delete(String[] ids);
+
+	/**
+	 * 更新状态
+	 * @param sellerId
+	 * @param status
+	 */
+	public void updateStatus(String sellerId,String status);
 
 }

@@ -133,26 +133,27 @@
 								 <!-- 颜色图片 -->
 								 <div class="btn-group">
 					                 <button type="button" class="btn btn-default" title="新建" data-target="#uploadModal"  data-toggle="modal"  ><i class="fa fa-file-o"></i> 新建</button>
-                             		                 
+                             		 <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"></i> 删除</button>                 
 					             </div>
 								 
 								 <table class="table table-bordered table-striped table-hover dataTable">
 					                    <thead>
 					                        <tr>
-					                            
+					                            <th class="" style="padding-right:0px">
+					                                <input id="selall" type="checkbox" class="icheckbox_square-blue">
+					                            </th>
 											    <th class="sorting">颜色</th>
 											    <th class="sorting">图片</th>
-												<th class="sorting">操作</th>
 							            </thead>
 					                    <tbody>
-					                      <tr>					                           
+					                      <tr>
+					                            <td><input  type="checkbox" ></td> 
 									            <td>
 									            	
 									            </td>
 									            <td>
 									           		<img alt="" src="" width="100px" height="100px">	            	 
 									            </td>
-												 <td> <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"></i> 删除</button></td> 
 					                      </tr>
 					                    </tbody>
 								 </table> 
@@ -184,7 +185,8 @@
                             	<div class="row data-type">
 	                            	<div class="col-md-2 title">是否启用规格</div>
 			                        <div class="col-md-10 data">
-			                        	<input type="checkbox" >			                           
+			                        	<input type="checkbox" >
+			                            <button type="button" class="btn btn-default" title="自定义规格" data-target="#mySpecModal"  data-toggle="modal"  ><i class="fa fa-file-o"></i> 自定义规格</button>               
 			                        </div>
                             	</div>
                             	<p>
@@ -376,7 +378,7 @@
 					                </button>	
 					            </td>
 								<td>
-									<img  src="" width="200px" height="200px">
+									<img  src="{{image_entity.url}}" width="200px" height="200px">
 								</td>
 							</tr>						
 						</table>
@@ -387,6 +389,40 @@
 		</div>
 		<div class="modal-footer">						
 			<button class="btn btn-success"  data-dismiss="modal" aria-hidden="true">保存</button>
+			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+		</div>
+	  </div>
+	</div>
+</div>
+
+
+
+<!-- 自定义规格窗口 -->
+<div class="modal fade" id="mySpecModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">自定义规格</h3>
+		</div>
+		<div class="modal-body">							
+			
+			<table class="table table-bordered table-striped">
+		      	<tr>
+		      		<td>规格名称</td>
+		      		<td><input  class="form-control" placeholder="规格名称" >  </td>
+		      	</tr>			    
+		      	<tr>
+		      		<td>规格选项(用逗号分隔)</td>
+		      		<td>
+						<input  class="form-control" placeholder="规格选项" >
+		      		</td>
+		      	</tr>		      	
+			 </table>				
+			
+		</div>
+		<div class="modal-footer">						
+			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
 			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>
 	  </div>
