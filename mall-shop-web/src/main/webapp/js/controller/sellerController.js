@@ -91,11 +91,7 @@ app.controller('sellerController', function($scope,$controller,sellerService,$ti
             $scope.list = res.data.rows;//当前页数据
         })
         .then(() => {
-            if(!$scope.isWatchCheck){
-                $scope.watchCheckALL();
-                $scope.watchCheckList();
-                $scope.isWatchCheck = true;
-            }
+            $scope.watchCheck();
         })
         .catch(err => console.log(err));
     }

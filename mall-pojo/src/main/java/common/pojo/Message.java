@@ -9,5 +9,5 @@ package common.pojo;
  */
 public class Message {
     public final static String ADMIN_SUCCESS = "操作成功";
-    public final static String ADMIN_FAIL = "操作失败";
+    public final static String ADMIN_ERROR = "操作失败";
 }

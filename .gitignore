@@ -32,3 +32,4 @@ hs_err_pid*
 /mall-dao/target/
 /mall-goods-service/target/
 /mall-goods-interface/target/
+/mall-goods-service/logs/

@@ -1,4 +1,4 @@
-package com.mall.manager.controller;
+package com.mall.shop.controller;
 
 import com.mall.goods.service.TypeTemplateService;
 import com.mall.pojo.TypeTemplate;
@@ -121,5 +121,15 @@ public class TypeTemplateController {
 	@RequestMapping("/findOptionList")
 	public List<Map> findOptionList(){
 		return typeTemplateService.findOptionList();
+	}
+
+	/**
+	 * 返回规格列表以及各个规格的选项
+	 * @param id 模板ID
+	 * @return
+	 */
+	@RequestMapping("/findSpecListWithOptions")
+	public List<Map> findSpecListWithOptions(Long id){
+		return typeTemplateService.findSpecListWithOptions(id);
 	}
 }

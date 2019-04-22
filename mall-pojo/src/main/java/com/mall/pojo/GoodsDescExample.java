@@ -3,14 +3,14 @@ package com.mall.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoodsdescExample {
+public class GoodsDescExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public GoodsdescExample() {
+    public GoodsDescExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 

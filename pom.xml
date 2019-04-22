@@ -14,7 +14,7 @@
 		<servlet-api.version>3.1.0</servlet-api.version>
 		<dubbo.version>2.7.0</dubbo.version>
 		<zookeeper.version>3.4.14</zookeeper.version>
-		<curator.version>2.12.0</curator.version>
+		<curator.version>2.13.0</curator.version>
 		<mybatis.version>3.2.8</mybatis.version>
 		<mybatis.spring.version>1.2.2</mybatis.spring.version>
 		<mybatis.paginator.version>1.2.15</mybatis.paginator.version>
@@ -26,8 +26,8 @@
 		<security.version>3.2.3.RELEASE</security.version>		
 		<solrj.version>4.10.3</solrj.version>
 		<ik.version>2012_u6</ik.version>
+		<log4j.version>1.2.17</log4j.version>
 		<slf4j.version>1.7.21</slf4j.version>
-		<logback.version>1.1.7</logback.version>
 		<security.version>4.2.12.RELEASE</security.version>
 	</properties>
 	
@@ -91,6 +91,12 @@
 				<groupId>org.apache.zookeeper</groupId>
 				<artifactId>zookeeper</artifactId>
 				<version>${zookeeper.version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>slf4j-log4j12</artifactId>
+						<groupId>org.slf4j</groupId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.curator</groupId>
@@ -271,26 +277,37 @@
 
 			<!-- 日志文件管理包 -->
 			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.7.7</version>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>${logback.version}</version>
+				<version>1.2.3</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>1.2.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.logback-extensions</groupId>
 				<artifactId>logback-ext-spring</artifactId>
 				<version>0.1.4</version>
 			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>jcl-over-slf4j</artifactId>
-				<version>1.7.25</version>
-			</dependency>
 			<!-- log end -->
+
 		</dependencies>
 	
 	</dependencyManagement>

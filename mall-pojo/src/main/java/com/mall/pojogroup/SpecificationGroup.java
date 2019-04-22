@@ -18,10 +18,12 @@ import java.util.List;
 @Data
 public class SpecificationGroup implements Serializable{
 
-    //规格
+    private static final long serialVersionUID = -612804027563971220L;
+
+    /** 规格*/
     private Specification specification;
 
-    //规格详细
+    /** 规格详细*/
     private List<SpecificationOption> specificationOptionList;
 
 

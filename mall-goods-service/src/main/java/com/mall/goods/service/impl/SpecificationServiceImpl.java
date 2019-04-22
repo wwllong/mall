@@ -1,15 +1,12 @@
 package com.mall.goods.service.impl;
 
-import com.mall.pojo.SpecificationOptionExample;
+import com.mall.pojo.*;
 import org.apache.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mall.mapper.SpecificationMapper;
 import com.mall.mapper.SpecificationOptionMapper;
-import com.mall.pojo.Specification;
-import com.mall.pojo.SpecificationExample;
 import com.mall.pojo.SpecificationExample.Criteria;
-import com.mall.pojo.SpecificationOption;
 import com.mall.pojogroup.SpecificationGroup;
 import com.mall.goods.service.SpecificationService;
 import com.mall.utils.StringUtils;
@@ -134,3 +131,4 @@ public class SpecificationServiceImpl implements SpecificationService {
 	}
 
 }
+

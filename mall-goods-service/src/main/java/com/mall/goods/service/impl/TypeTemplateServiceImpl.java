@@ -1,9 +1,13 @@
 package com.mall.goods.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mall.goods.service.TypeTemplateService;
+import com.mall.mapper.SpecificationOptionMapper;
 import com.mall.mapper.TypeTemplateMapper;
+import com.mall.pojo.SpecificationOption;
+import com.mall.pojo.SpecificationOptionExample;
 import com.mall.pojo.TypeTemplate;
 import com.mall.pojo.TypeTemplateExample;
 import com.mall.pojo.TypeTemplateExample.Criteria;
@@ -25,6 +29,9 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 
 	@Autowired
 	private TypeTemplateMapper typeTemplateMapper;
+
+	@Autowired
+	private SpecificationOptionMapper specificationOptionMapper;
 
 	@Override
 	public void add(TypeTemplate typeTemplate) {
@@ -80,6 +87,32 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 	@Override
 	public List<Map> findOptionList() {
 		return typeTemplateMapper.selectOptionList();
+	}
+
+	@Override
+	public List<Map> findSpecListWithOptions(Long id) {
+		// 查询模板
+		TypeTemplate typeTemplate = typeTemplateMapper.selectByPrimaryKey(id);
+		//JSON字符串转换
+		List<Map> list = JSON.parseArray(typeTemplate.getSpecIds(), Map.class);
+
+//		for(Map map : list){
+//			// 查询规格选项列表
+//			SpecificationOptionExample example = new SpecificationOptionExample();
+//			SpecificationOptionExample.Criteria criteria = example.createCriteria();
+//			criteria.andSpecIdEqualTo(Long.parseLong(map.get("id").toString()));
+//			List<SpecificationOption> options = specificationOptionMapper.selectByExample(example);
+//			map.put("options",options);
+//		}
+		list.forEach( map -> {
+			SpecificationOptionExample example = new SpecificationOptionExample();
+			SpecificationOptionExample.Criteria criteria = example.createCriteria();
+			criteria.andSpecIdEqualTo(Long.parseLong(map.get("id").toString()));
+			List<SpecificationOption> options = specificationOptionMapper.selectByExample(example);
+			map.put("options",options);
+		});
+
+		return list;
 	}
 
 }

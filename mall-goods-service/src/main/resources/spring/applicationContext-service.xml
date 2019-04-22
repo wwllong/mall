@@ -17,6 +17,6 @@
     <!-- dubbo-provider-config -->
     <dubbo:protocol name="${dubbo.protocol.name}" port="${dubbo.protocol.port}"/>
     <dubbo:application name="${dubbo.application.name}"/>
-    <dubbo:registry address="${dubbo.registry.address}" client="${dubbo.registry.client}"/>
+    <dubbo:registry address="${dubbo.registry.address}" client="${dubbo.registry.client}" timeout="${dubbo.registry.timeout}"/>
     <dubbo:annotation package="com.mall.goods.service.impl"/>
 </beans>

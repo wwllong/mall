@@ -86,7 +86,7 @@
 /* 表格双倍高度 */
 .data-type .title.rowHeight2x,
 .data-type .data.rowHeight2x {
-	height:84px;
+	height:100px;
 }
 .data-type .title.rowHeight2x {
 	line-height:78px;
@@ -96,10 +96,10 @@
 }*/
 .data-type .title.editer,
 .data-type .data.editer {
-	height:320px;
+	height:420px;
 }
 .data-type .title.editer {
-	line-height:300px;
+	line-height:400px;
 }
 
 /*清除parding*/

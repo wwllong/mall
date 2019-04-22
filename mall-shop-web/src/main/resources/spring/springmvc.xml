@@ -13,7 +13,7 @@
 
     <context:component-scan base-package="com.mall.shop.controller"/>
 
-    <context:property-placeholder location="classpath:config/dubbo.properties"/>
+    <context:property-placeholder location="classpath:config/application.properties"/>
 
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
@@ -31,6 +31,13 @@
 
     <!-- 因为spring-security引入了dubbo服务，此处直接开启扫描 -->
     <dubbo:annotation package="com.mall.shop.controller"/>
+
+    <!-- 配置多媒体解析器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!-- 设定文件上传的最大值5MB，5*1024*1024 -->
+        <property name="maxUploadSize" value="${file.maxUploadSize}"/>
+    </bean>
 
 
 

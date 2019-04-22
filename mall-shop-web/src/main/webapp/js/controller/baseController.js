@@ -78,6 +78,25 @@ app.controller('baseController', function($scope) {
         return joinVal;
     }
 
+    //监控icheck
+    $scope.watchCheck = function () {
+        if(!$scope.isWatchCheck){
+            $scope.watchCheckALL();
+            $scope.watchCheckList();
+            $scope.isWatchCheck = true;
+        }
+    }
+
+    //从集合中按照Key查询对象
+    $scope.searchObjectByKey = function (list,key,keyValue) {
+        for(let i=0,len=list.length; i<len; ++i){
+            if(list[i][key] === keyValue){
+                return list[i];
+            }
+        }
+        return null;
+    }
+
     /*监听页面加载完成
     $scope.$watch('$viewContentLoaded', function() {
 

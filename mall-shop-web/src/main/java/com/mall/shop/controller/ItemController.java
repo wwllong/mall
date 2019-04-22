@@ -1,11 +1,10 @@
 package com.mall.shop.controller;
 
-import com.mall.goods.service.SellerService;
-import com.mall.pojo.Seller;
+import com.mall.goods.service.ItemService;
+import com.mall.pojo.Item;
 import common.pojo.PageResult;
 import common.pojo.Result;
 import org.apache.dubbo.config.annotation.Reference;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,36 +12,27 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * 卖家控制层
+ * 商品SKU 控制层
  *
  * @author Wwl
  */
 @RestController
-@RequestMapping("/seller")
-public class SellerController {
+@RequestMapping("/item")
+public class ItemController {
 
     @Reference
-    private SellerService sellerService;
+    private ItemService itemService;
 
     /**
      * 新增
      *
-     * @param seller
+     * @param item
      * @return
      */
     @RequestMapping("/add")
-    public Result add(@RequestBody Seller seller) {
-        Seller isRegister = sellerService.findOne(seller.getSellerId());
-        if (isRegister != null) {
-            return Result.error("该账号已存在,请勿重复申请入驻！");
-        }
-        //密码加密
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encryptPassword = passwordEncoder.encode(seller.getPassword());
-        seller.setPassword(encryptPassword);
-
+    public Result add(@RequestBody Item item) {
         try {
-            sellerService.add(seller);
+            itemService.add(item);
             return Result.ADMIN_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,13 +44,13 @@ public class SellerController {
     /**
      * 修改
      *
-     * @param seller
+     * @param item
      * @return
      */
     @RequestMapping("/update")
-    public Result update(@RequestBody Seller seller) {
+    public Result update(@RequestBody Item item) {
         try {
-            sellerService.update(seller);
+            itemService.update(item);
             return Result.ADMIN_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,8 +65,8 @@ public class SellerController {
      * @return
      */
     @RequestMapping("/findOne")
-    public Seller findOne(String id) {
-        return sellerService.findOne(id);
+    public Item findOne(Long id) {
+        return itemService.findOne(id);
     }
 
     /**
@@ -85,8 +75,8 @@ public class SellerController {
      * @return
      */
     @RequestMapping("/list")
-    public List<Seller> findAll() {
-        return sellerService.findAll();
+    public List<Item> findAll() {
+        return itemService.findAll();
     }
 
     /**
@@ -98,20 +88,20 @@ public class SellerController {
      */
     @RequestMapping("/listByPage")
     public PageResult findPage(int page, int size) {
-        return sellerService.findPage(page, size);
+        return itemService.findPage(page, size);
     }
 
     /**
      * 条件查询-分页
      *
-     * @param seller
+     * @param item
      * @param page
      * @param size
      * @return
      */
     @RequestMapping("/search")
-    public PageResult search(@RequestBody Seller seller, int page, int size) {
-        return sellerService.findPage(seller, page, size);
+    public PageResult search(@RequestBody Item item, int page, int size) {
+        return itemService.findPage(item, page, size);
     }
 
     /**
@@ -121,9 +111,9 @@ public class SellerController {
      * @return
      */
     @RequestMapping("/delete")
-    public Result delete(String[] ids) {
+    public Result delete(Long[] ids) {
         try {
-            sellerService.delete(ids);
+            itemService.delete(ids);
             return Result.ADMIN_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
