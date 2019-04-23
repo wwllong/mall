@@ -113,6 +113,13 @@ public class ItemCatalogController {
     @RequestMapping("/delete")
     public Result delete(Long[] ids) {
         try {
+            //有下一级的分类不能删除
+            for(int x=0,length=ids.length; x<length; ++x){
+                List<ItemCatalog> list = itemCatalogService.findByParentId(ids[x]);
+                if(list.size()>0){
+                    return Result.error("有下一级分类，不能删除！");
+                }
+            }
             itemCatalogService.delete(ids);
             return Result.ADMIN_SUCCESS;
         } catch (Exception e) {

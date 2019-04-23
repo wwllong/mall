@@ -38,6 +38,7 @@ app.controller('itemCatalogController', function($scope,$controller,itemCatalogS
         serviceObj.then(function(res){
             layer.msg(res.data.message);
             if(res.data.success){
+                //刷新表格数据
                 $scope.findByParentId($scope.parentId);
             }
         })
@@ -64,7 +65,7 @@ app.controller('itemCatalogController', function($scope,$controller,itemCatalogS
                 itemCatalogService.delete(selectIds).then(function(res){
                     layer.msg(res.data.message);
                     if(res.data.success){
-                        $scope.reloadList();
+                        $scope.findByParentId($scope.parentId);
                     }
                     layer.close(index);
                 })

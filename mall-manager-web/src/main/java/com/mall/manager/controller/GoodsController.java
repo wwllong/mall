@@ -1,4 +1,4 @@
-package com.mall.shop.controller;
+package com.mall.manager.controller;
 
 import com.mall.goods.service.GoodsService;
 import com.mall.pojo.Goods;
@@ -63,6 +63,7 @@ public class GoodsController {
         if(!goodsGroup2.getGoods().getSellerId().equals(sellerId) || !goodsGroup.getGoods().getSellerId().equals(sellerId)){
             return Result.error("非法操作");
         }
+
         try {
             goodsService.update(goodsGroup);
             return Result.ADMIN_SUCCESS;
@@ -115,9 +116,6 @@ public class GoodsController {
      */
     @RequestMapping("/search")
     public PageResult search(@RequestBody Goods goods, int page, int size) {
-        String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
-        //添加查询条件
-        goods.setSellerId(sellerId);
         return goodsService.findPage(goods, page, size);
     }
 
@@ -146,10 +144,6 @@ public class GoodsController {
      */
     @RequestMapping("/updateStatus")
     public Result updateStatus(Long[] ids,String status) {
-        String[] statusArr = new String[]{"1","3"};
-        if(statusArr[0].equals(status) || statusArr[1].equals(status)){
-            return Result.error("非法操作!");
-        }
         try {
             goodsService.updateStatus(ids,status);
             return Result.ADMIN_SUCCESS;
@@ -159,21 +153,5 @@ public class GoodsController {
         }
     }
 
-    /**
-     * 批量上下架
-     *
-     * @param ids
-     * @return
-     */
-    @RequestMapping("/updateMarketable")
-    public Result updateMarketable(Long[] ids,String status) {
-        try {
-            goodsService.updateMarketable(ids,status);
-            return Result.ADMIN_SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Result.ADMIN_ERROR;
-        }
-    }
 
 }

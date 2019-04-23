@@ -8,17 +8,21 @@
     <title>商品管理</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
-
+    <!-- load css start -->
     <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
     <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <!-- 分页组件css -->
+    <link rel="stylesheet" href="../plugins/angularjs/module/pagination.css">
+    <link rel="stylesheet" href="../plugins/icheck/css/green.css">
+    <!-- load css end -->
 
 </head>
 
-<body class="hold-transition skin-red sidebar-mini">
+<body class="hold-transition skin-red sidebar-mini"  ng-app="mall" ng-controller="goodsController" ng-init="findItemCatalogList();"  ng-cloak>
 <!-- .box-body -->
 
 <div class="box-header with-border">
@@ -29,16 +33,14 @@
 
     <!-- 数据表格 -->
     <div class="table-box">
-
         <!--工具栏-->
         <div class="pull-left">
             <div class="form-group form-inline">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default" title="新建"><i class="fa fa-file-o"></i> 新建</button>
-                    <button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
-                    <button type="button" class="btn btn-default" title="提交审核"><i class="fa fa-check"></i> 提交审核</button>
-                    <button type="button" class="btn btn-default" title="屏蔽" onclick='confirm("你确认要屏蔽吗？")'><i
-                            class="fa fa-ban"></i> 屏蔽
+                    <a href="goods_edit.html" class="btn btn-default" title="新建" target="_self"><i class="fa fa-file-o"></i> 新建</a>
+                    <button type="button" class="btn btn-default" title="提交审核" ng-click="updateStatus('0')"><i class="fa fa-check"></i> 提交审核</button>
+                    <button type="button" class="btn btn-default" title="上架" ng-click="updateMarketable('1')"><i class="fa fa-circle-o"></i> 上架</button>
+                    <button type="button" class="btn btn-default" title="屏蔽" ng-click="updateMarketable('0')"><i class="fa fa-ban"></i> 屏蔽
                     </button>
                     <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i
                             class="fa fa-refresh"></i> 刷新
@@ -47,68 +49,59 @@
             </div>
         </div>
         <div class="box-tools pull-right">
-            <div class="has-feedback">
-                状态：<select>
-                <option value="">全部</option>
-                <option value="0">未申请</option>
-                <option value="1">申请中</option>
-                <option value="2">审核通过</option>
-                <option value="3">已驳回</option>
-            </select>
-                商品名称：<input>
-                <button class="btn btn-default">查询</button>
-            </div>
+                <form class="form-inline">
+                    <select class="form-control" ng-model="searchEntity.auditStatus" >
+                        <option value="">=商品状态=</option>
+                        <option value="0">未审核</option>
+                        <option value="1">已审核</option>
+                        <option value="2">审核未通过</option>
+                        <option value="3">已关闭</option>
+                    </select>
+                    <input ng-model="searchEntity.goodsName" class="form-control" placeholder="商品名称">
+                    <button class="btn btn-default" ng-click="reloadList()">查询</button>
+                </form>
         </div>
         <!--工具栏/-->
 
         <!--数据列表-->
         <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
             <thead>
-            <tr>
-                <th class="" style="padding-right:0px">
-                    <input id="selall" type="checkbox" class="icheckbox_square-blue">
-                </th>
-                <th class="sorting_asc">商品ID</th>
-                <th class="sorting">商品名称</th>
-                <th class="sorting">商品价格</th>
-                <th class="sorting">一级分类</th>
-                <th class="sorting">二级分类</th>
-                <th class="sorting">三级分类</th>
-                <th class="sorting">状态</th>
-                <th class="text-center">操作</th>
-            </tr>
+                <tr>
+                    <th class="" style="padding-right:0px">
+                        <input type="checkbox" ng-model="isSelectAll" ng-icheck/>
+                    </th>
+                    <th class="sorting_asc">商品ID</th>
+                    <th class="sorting">商品名称</th>
+                    <th class="sorting">商品价格</th>
+                    <th class="sorting">一级分类</th>
+                    <th class="sorting">二级分类</th>
+                    <th class="sorting">三级分类</th>
+                    <th class="sorting">上/下架</th>
+                    <th class="sorting">状态</th>
+                    <th class="text-center">操作</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>1</td>
-                <td>小米6S手机</td>
-                <td>1090</td>
-                <td>数码</td>
-                <td>手机</td>
-                <td>国产手机</td>
-                <td>
-		                                  	<span>
-		                                  		未申请
-		                                  	</span>
-                    <span>
-		                                  		申请中
-		                                  	</span>
-                    <span>
-		                                  		审核通过
-		                                  	</span>
-                    <span>
-		                                  		已驳回
-		                                  	</span>
-                </td>
-                <td class="text-center">
-                    <button type="button" class="btn bg-olive btn-xs">修改</button>
-                </td>
-            </tr>
+                <tr ng-repeat="goods in list">
+                    <td><input type="checkbox" ng-model="goods.isSelect" ng-icheck/></td>
+                    <td>{{goods.id}}</td>
+                    <td>{{goods.goodsName}}</td>
+                    <td>{{goods.price}}</td>
+                    <td>{{itemCatalogList[goods.category1Id]}}</td>
+                    <td>{{itemCatalogList[goods.category2Id]}}</td>
+                    <td>{{itemCatalogList[goods.category3Id]}}</td>
+                    <td>{{marketable[goods.isMarketable]}}</td>
+                    <td>{{status[goods.auditStatus]}}</td>
+                    <td class="text-center">
+                        <a href="goods_edit.html?id={{goods.id}}" class="btn bg-olive btn-xs" target="_self">修改</a>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <!--数据列表/-->
 
+        <!-- 分页组件 -->
+        <tm-pagination conf="paginationConf"></tm-pagination>
 
     </div>
     <!-- 数据表格 /-->
@@ -122,10 +115,15 @@
 <script type="text/javascript" src="../plugins/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
 <script type="text/javascript" src="../plugins/angularjs/angular-messages.min.js"></script>
+<script type="text/javascript" src="../plugins/icheck/icheck.min.js"></script>
 <script type="text/javascript" src="../plugins/layer/layer.js"></script>
 
+<!-- 分页组件js -->
+<script type="text/javascript" src="../plugins/angularjs/module/pagination.js"></script>
+<script type="text/javascript" src="../plugins/angularjs/module/icheck.js"></script>
+
 <script type="text/javascript" src="../js/common/base_tips.js"></script>
-<script type="text/javascript" src="../js/common/base.js"></script>
+<script type="text/javascript" src="../js/common/base_pagination.js"></script>
 <script type="text/javascript" src="../js/service/goodsService.js"></script>
 <script type="text/javascript" src="../js/service/uploadService.js"></script>
 <script type="text/javascript" src="../js/service/itemCatalogService.js"></script>

@@ -5,7 +5,7 @@
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>编辑商品</title>
+    <title>商品详情</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
 
@@ -21,11 +21,10 @@
 
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" ng-app="mall" ng-controller="goodsController" ng-init="selectItemCatalogRootList();findOne();" ng-cloak>
+<body class="hold-transition skin-red sidebar-mini" ng-app="mall" ng-controller="goodsController" ng-init="findItemCatalogList();findOne();findBrandList();" ng-cloak>
 
 <div class="box-header with-border">
-    <h3 class="box-title" ng-if="goodsGroup.goods.id==null">新增商品</h3>
-    <h3 class="box-title" ng-if="goodsGroup.goods.id!=null">编辑商品</h3>
+
 </div>
 
 <!-- 正文区域 -->
@@ -59,60 +58,44 @@
                 <!--表单内容-->
                 <div class="tab-pane active" id="home">
                     <div class="row data-type">
-                        <div class="col-md-2 title">商品分类</div>
-
-                        <div class="col-md-10 data">
-                            <table>
-                                <tr>
-                                    <div class="row">
-                                        <div class="col-xs-3"><select class="form-control" ng-model="goodsGroup.goods.category1Id" ng-options="item.id as item.name for item in itemCatalogRootList"></select></div>
-                                        <div class="col-xs-3"><select class="form-control" ng-model="goodsGroup.goods.category2Id" ng-options="item.id as item.name for item in itemCatalog2List"></select></div>
-                                        <div class="col-xs-3"><select class="form-control" ng-model="goodsGroup.goods.category3Id" ng-options="item.id as item.name for item in itemCatalog3List"></select></div>
-                                        <div class="col-xs-3"><p style="line-height: 2.5;">模板ID:{{goodsGroup.goods.typeTemplateId}}</p></div>
-                                    </div>
-                                </tr>
-                            </table>
-
-                        </div>
-
-
-                        <div class="col-md-2 title">商品名称</div>
-                        <div class="col-md-10 data">
-                            <input type="text" class="form-control" placeholder="商品名称" ng-model="goodsGroup.goods.goodsName">
-                        </div>
-
-                        <div class="col-md-2 title">品牌</div>
-                        <div class="col-md-10 data">
-                            <select class="form-control" ng-model="goodsGroup.goods.brandId" ng-options="item.id as item.text for item in typeTemplate.brandIds"></select>
-                        </div>
-
-                        <div class="col-md-2 title">副标题</div>
-                        <div class="col-md-10 data">
-                            <input type="text" class="form-control" placeholder="副标题" ng-model="goodsGroup.goods.caption">
-                        </div>
-
-                        <div class="col-md-2 title">价格(元)</div>
-                        <div class="col-md-10 data">
-                            <div class="input-group">
-                                <span class="input-group-addon">¥</span>
-                                <input type="number" class="form-control" placeholder="价格" ng-model="goodsGroup.goods.price">
-                            </div>
-                        </div>
-
-                        <div class="col-md-2 title editer">商品介绍</div>
-                        <div class="col-md-10 data editer">
-                            <textarea name="content" style="width:800px;height:400px;visibility:hidden;" ></textarea>
-                        </div>
-
-                        <div class="col-md-2 title rowHeight2x">包装列表</div>
-                        <div class="col-md-10 data rowHeight2x">
-                            <textarea rows="4" class="form-control" placeholder="包装列表" ng-model="goodsGroup.goodsDesc.packageList"></textarea>
-                        </div>
-
-                        <div class="col-md-2 title rowHeight2x">售后服务</div>
-                        <div class="col-md-10 data rowHeight2x">
-                            <textarea rows="4" class="form-control" placeholder="售后服务" ng-model="goodsGroup.goodsDesc.saleService"></textarea>
-                        </div>
+                        <table class="table table-bordered table-striped" width="800px">
+                            <tr>
+                                <td>商品名称</td>
+                                <td>{{goodsGroup.goods.goodsName}}</td>
+                            </tr>
+                            <tr>
+                                <td>副标题</td>
+                                <td>{{goodsGroup.goods.caption}}</td>
+                            </tr>
+                            <tr>
+                                <td>商品分类</td>
+                                <td>{{itemCatalogList[goodsGroup.goods.category1Id]}}-{{itemCatalogList[goodsGroup.goods.category2Id]}}-{{itemCatalogList[goodsGroup.goods.category3Id]}}</td>
+                            </tr>
+                            <tr>
+                                <td>品牌</td>
+                                <td>{{brandList[goodsGroup.goods.brandId]}}</td>
+                            </tr>
+                            <tr>
+                                <td>价格(元)</td>
+                                <td>{{goodsGroup.goods.price}}</td>
+                            </tr>
+                            <tr>
+                                <td>包装列表</td>
+                                <td>{{goodsGroup.goodsDesc.packageList}}</td>
+                            </tr>
+                            <tr>
+                                <td>售后服务</td>
+                                <td>{{goodsGroup.goodsDesc.saleService}}</td>
+                            </tr>
+                            <tr>
+                                <td>状态</td>
+                                <td>{{status[goodsGroup.goods.auditStatus]}}</td>
+                            </tr>
+                            <tr>
+                                <td>商品介绍</td>
+                                <td><textarea name="content" style="width:800px;height:400px;visibility:hidden;" ></textarea></td>
+                            </tr>
+                        </table>
 
 
                     </div>
@@ -121,63 +104,44 @@
                 <!--图片上传-->
                 <div class="tab-pane" id="pic_upload">
                     <div class="row data-type">
-                        <!-- 颜色图片 -->
-                        <div class="pull-left">
-                            <div class="form-group form-inline">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default" title="新建" data-target="#uploadModal"
-                                            ng-click="img_entity={url:''}" data-toggle="modal"><i class="fa fa-file-o"></i> 新建
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <table class="table table-bordered table-striped table-hover dataTable">
+                        <table class="table table-bordered table-striped" width="800px">
                             <thead>
                             <tr>
                                 <th class="sorting">颜色</th>
                                 <th class="sorting">图片</th>
-                                <th class="text-center">操作</th>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="pojo in goodsGroup.goodsDesc.itemImages">
                                     <td>{{pojo.color}}</td>
-                                    <td><img alt="" ng-src="{{pojo.url}}" width="100px" height="100px"></td>
-                                    <td class="text-center">
-                                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#editModal"
-                                                ng-click="removeImgEntity($index)">删除
-                                        </button>
-                                    </td>
+                                    <td><a target="_blank" href="{{pojo.url}}"><img alt="" ng-src="{{pojo.url}}" width="100px" height="100px" ></a></td>
                                 </tr>
                             </tbody>
                         </table>
-
                     </div>
                 </div>
-
 
                 <!--扩展属性-->
                 <div class="tab-pane" id="customAttribute">
                     <div class="row data-type">
-                        <div ng-repeat="pojo in goodsGroup.goodsDesc.customAttributeItems">
-                            <div class="col-md-2 title">{{pojo.text}}</div>
-                            <div class="col-md-10 data">
-                                <input class="form-control" placeholder="{{pojo.text}}" ng-model="pojo.value">
-                            </div>
-                        </div>
+                        <table class="table table-bordered table-striped" width="800px">
+                            <tr ng-repeat="pojo in goodsGroup.goodsDesc.customAttributeItems">
+                                <td>{{pojo.text}}</td>
+                                <td>{{pojo.value}}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
 
                 <!--规格-->
                 <div class="tab-pane" id="spec">
                     <div class="row data-type">
-                        <div class="col-md-2 title">是否启用规格</div>
-                        <div class="col-md-10 data">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="option1" aria-label="..." ng-model="goodsGroup.goods.isEnableSpec" ng-true-value="'1'" ng-false-value="'2'">
-                                </label>
-                            </div>
+                        <div class="row">
+                            <table class="table table-bordered table-striped" width="800px">
+                                <tr>
+                                    <td>是否启用规格</td>
+                                    <td>{{goodsGroup.goods.isEnableSpec=='1'?'是':'否' }}</td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
 
@@ -212,12 +176,12 @@
                                 <tbody>
                                     <tr ng-repeat="pojo in goodsGroup.itemList">
                                         <th class="sorting" ng-repeat="item in goodsGroup.goodsDesc.specificationItems">{{pojo.spec[item.attributeName]}}</th>
-                                        <td><input class="form-control" placeholder="价格" ng-model="pojo.price"></td>
-                                        <td><input class="form-control" placeholder="库存数量" ng-model="pojo.num"></td>
+                                        <td><p>{{pojo.price}}</p></td>
+                                        <td><p>{{pojo.num}}</p></td>
                                         <td>
                                             <div class="checkbox">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" ng-model="pojo.status" placeholder="是否启用" ng-true-value="'1'" ng-false-value="'2'" >
+                                                    <input type="checkbox" ng-model="pojo.status" placeholder="商品状态" ng-true-value="'1'" ng-false-value="'2'" >
                                                 </label>
                                             </div>
                                         </td>
@@ -247,8 +211,7 @@
 
     <!--底部工具栏-->
     <div class="btn-toolbar list-toolbar">
-        <button class="btn btn-primary" ng-click="save()"><i class="fa fa-save"></i>保存</button>
-        <a href="goods.html" class="btn btn-default" target="_self">返回列表</a>
+
     </div>
     <!--底部工具栏/-->
 
@@ -338,7 +301,6 @@
 <script type="text/javascript" src="../plugins/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
 <script type="text/javascript" src="../plugins/angularjs/angular-messages.min.js"></script>
-<script type="text/javascript" src="../plugins/layer/layer.js"></script>
 
 <!-- 富文本编辑器 -->
 <script charset="utf-8" src="../plugins/kindeditor/kindeditor-min.js"></script>
@@ -351,13 +313,10 @@
         });
     });
 </script>
-
-<script type="text/javascript" src="../js/common/base_tips.js"></script>
 <script type="text/javascript" src="../js/common/base.js"></script>
 <script type="text/javascript" src="../js/service/goodsService.js"></script>
-<script type="text/javascript" src="../js/service/uploadService.js"></script>
 <script type="text/javascript" src="../js/service/itemCatalogService.js"></script>
-<script type="text/javascript" src="../js/service/typeTemplateService.js"></script>
+<script type="text/javascript" src="../js/service/brandService.js"></script>
 <script type="text/javascript" src="../js/controller/baseController.js"></script>
 <script type="text/javascript" src="../js/controller/goodsController.js"></script>
 <!-- load script end -->

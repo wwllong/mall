@@ -17,6 +17,7 @@ import com.github.pagehelper.PageHelper;
 
 import common.pojo.PageResult;
 import com.mall.utils.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 品牌服务实现
@@ -24,6 +25,7 @@ import com.mall.utils.StringUtils;
  *
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class BrandServiceImpl implements BrandService {
 
 	@Autowired

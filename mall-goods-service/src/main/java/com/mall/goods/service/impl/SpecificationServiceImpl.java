@@ -12,6 +12,7 @@ import com.mall.goods.service.SpecificationService;
 import com.mall.utils.StringUtils;
 import common.pojo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import java.util.Map;
  *
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SpecificationServiceImpl implements SpecificationService {
 
 	@Autowired

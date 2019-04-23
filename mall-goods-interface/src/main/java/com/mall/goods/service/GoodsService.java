@@ -21,15 +21,15 @@ public interface GoodsService {
 
 	/**
 	 * 修改
-	 * @param goods
+	 * @param goodsGroup
 	 */
-	public void update(Goods goods);
+	public void update(GoodsGroup goodsGroup);
 
 	/**
 	 * 根据Id获取实体
 	 * @param id
 	 * */
-	public Goods findOne(Long id);
+	public GoodsGroup findOne(Long id);
 
 	/**
 	 * 查询所有
@@ -59,5 +59,19 @@ public interface GoodsService {
 	 * @return
 	 */
 	public void delete(Long[] ids);
+
+	/**
+	 * 批量上下架
+	 * @param ids
+	 * @param status
+	 */
+	public void updateMarketable(Long[] ids,String status);
+
+	/**
+	 * 批量修改状态
+	 * @param ids
+	 * @param status
+	 */
+	public void updateStatus(Long[] ids,String status);
 
 }

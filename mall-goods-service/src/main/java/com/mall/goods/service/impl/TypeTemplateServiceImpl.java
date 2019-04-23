@@ -15,6 +15,7 @@ import com.mall.utils.StringUtils;
 import common.pojo.PageResult;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import java.util.Map;
  *
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class TypeTemplateServiceImpl implements TypeTemplateService {
 
 	@Autowired

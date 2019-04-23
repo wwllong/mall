@@ -1,6 +1,6 @@
 /**
  * 商品SPU服务层
- * Created by Wwl on 2019/4/18
+ * Created by Wwl on 2019/3/4
  */
 app.service('goodsService', function($http){
 
@@ -27,8 +27,4 @@ app.service('goodsService', function($http){
 
     //更新状态
     this.updateStatus = (ids,status) => $http.get('../goods/updateStatus.do?ids='+ids+'&status='+status);
-
-    //商品上下架
-    this.updateMarketable = (ids,status) => $http.get('../goods/updateMarketable.do?ids='+ids+'&status='+status);
-
 });

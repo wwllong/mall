@@ -2,12 +2,26 @@
  * 商品控制层
  * Created by Wwl on 2019/4/18
  */
-app.controller('goodsController', function($scope,$controller,goodsService,uploadService,itemCatalogService,typeTemplateService) {
+app.config([ '$locationProvider', function($locationProvider) {
+    $locationProvider.html5Mode({
+        //设置为html5Mode(模式)，当为false时为Hashbang模式
+        enabled : true,
+        //是否需要加入base标签，这里设置为false，设置为true时，需在html的head配置<base href="" />标签
+        requireBase : false
+    });
+} ]);
+app.controller('goodsController', function($scope,$controller,goodsService,uploadService,itemCatalogService,typeTemplateService,$location,$timeout) {
 
     $controller('baseController',{$scope:$scope});//继承
 
     //页面实体
     $scope.goodsGroup = {goods:{},goodsDesc:{itemImages:[],specificationItems:[]}};
+
+    //商品状态
+    $scope.status=['未审核','已审核','审核未通过','关闭'];
+
+    //商品上下架
+    $scope.marketable=['下架','上架'];
 
     //数据验证
     $scope.validate = {
@@ -29,8 +43,8 @@ app.controller('goodsController', function($scope,$controller,goodsService,uploa
         });
     }
 
-    //新增商品
-    $scope.add = function(){
+    //保存商品
+    $scope.save = function(){
         //未选择商品分类
         let typeTemplateId = $scope.goodsGroup.goods.typeTemplateId;
         if(typeTemplateId === undefined || typeTemplateId === null){
@@ -42,33 +56,74 @@ app.controller('goodsController', function($scope,$controller,goodsService,uploa
             layer.msg("请选择商品品牌!");
             return;
         }
-
-        //增加商品
+        //提取富文本值
         $scope.goodsGroup.goodsDesc.introduction = editor.html();
 
-        let serviceObj=goodsService.add($scope.goodsGroup);
+        let serviceObj = null;
+        if($scope.goodsGroup.goods.id!=null){
+            serviceObj=goodsService.update($scope.goodsGroup);
+        }else{
+            serviceObj=goodsService.add($scope.goodsGroup);
+        }
         serviceObj.then( (res) => {
             if(res.data.success){
-                //清空数据
-                $scope.goodsGroup = {goods:{},goodsDesc:{itemImages:[],specificationItems:[]}};
-                $scope.specListWithOptions = [];
-                editor.html('');
                 layer.msg(res.data.message);
+                if($scope.goodsGroup.goods.id!=null){
+                    $timeout(function () {
+                        location.href="goods.html";//跳转到商品列表页
+                    },1000);
+                }else{
+                    //清空数据
+                    $scope.goodsGroup = {goods:{},goodsDesc:{itemImages:[],specificationItems:[]}};
+                    $scope.specListWithOptions = [];
+                    editor.html('');
+                }
             }else{
                 layer.msg(res.data.message);
+            }
+        })
+        .catch(err => console.log(err));
+    }
+
+    //查找实体-引用$location服务，进行页面之间跳转
+    $scope.findOne = function(){
+        //获取参数值
+        let id = $location.search()['id'];
+        if(id===undefined || id===""){
+            return ;
+        }
+        //查询，回显数据
+        goodsService.findOne(id).then(function(res){
+            $scope.goodsGroup = res.data;
+            let goodsDesc = $scope.goodsGroup.goodsDesc;
+            //富文本-商品介绍
+            editor.html(goodsDesc.introduction);
+            //图片列表
+            goodsDesc.itemImages = JSON.parse(goodsDesc.itemImages);
+            //扩展属性,注意此处会受监听器的影响，会被覆盖
+            goodsDesc.customAttributeItems = JSON.parse(goodsDesc.customAttributeItems);
+            //规格属性
+            goodsDesc.specificationItems = JSON.parse(goodsDesc.specificationItems);
+            //SKU信息
+            let itemList = $scope.goodsGroup.itemList;
+            for(let x=0,len=itemList.length; x<len; ++x){
+                itemList[x].spec = JSON.parse( itemList[x].spec );
             }
 
         })
         .catch(err => console.log(err));
     }
 
-
-    //查找实体
-    $scope.findOne = function(id){
-        goodsService.findOne(id).then(function(res){
-            $scope.goods = res.data;
-        })
-        .catch(err => console.log(err));
+    //回显规格属性-根据规格名称和选项名称返回是否被勾选
+    $scope.checkAttrValue = function(attrName,attrValue){
+        let specItems = $scope.goodsGroup.goodsDesc.specificationItems;
+        let item = $scope.searchObjectByKey(specItems,'attributeName',attrName);
+        if(item == null){
+            return false;
+        }else{
+            //查找是否存在该值
+            return (item.attributeValue.indexOf(attrValue)<0) ? false : true;
+        }
     }
 
     //删除
@@ -191,7 +246,10 @@ app.controller('goodsController', function($scope,$controller,goodsService,uploa
             $scope.typeTemplate = res.data;
             //更新品牌、扩展属性，注意扩展属性绑定到页面实体
             $scope.typeTemplate.brandIds = JSON.parse($scope.typeTemplate.brandIds);
-            $scope.goodsGroup.goodsDesc.customAttributeItems = JSON.parse($scope.typeTemplate.customAttributeItems);
+            //如果没有ID，则加载模板中的扩展数据
+            if($location.search()['id']===undefined || $location.search()['id']===""){
+                $scope.goodsGroup.goodsDesc.customAttributeItems = JSON.parse($scope.typeTemplate.customAttributeItems);
+            }
         }).then( (res) =>{
             //查询模板关联的规格列表-用于显示数据
             typeTemplateService.findSpecListWithOptions(newValue).then( (res) => {
@@ -245,6 +303,58 @@ app.controller('goodsController', function($scope,$controller,goodsService,uploa
             }
         }
         return newList;
+    }
+
+    $scope.itemCatalogList = [];
+
+    //查询分类
+    $scope.findItemCatalogList = function () {
+        itemCatalogService.findList().then((res)=>{
+            //对查询结果进行处理,封装成分类数组，[{id:"",name:""}]
+            let data = res.data;
+            for (let x=0,len=data.length; x<len; ++x){
+                $scope.itemCatalogList[data[x].id]=data[x].name;
+            }
+        })
+        .catch((err)=>(console.log(err)));
+    }
+
+    //更新商品状态
+    $scope.updateStatus = function (status){
+        let selectIds = $scope.getSelectId();
+        if(selectIds.length===0){
+            layer.msg("请选择要操作的数据!");
+            return;
+        }
+        if(status==='0'){
+            layer.confirm("确定要提交审核？", {icon: 3, title:TIPS}, function(index){
+                goodsService.updateStatus(selectIds,status).then(function(res){
+                    layer.msg("提交成功，请耐心等待审核。");
+                    if(res.data.success){
+                        $scope.reloadList();
+                    }
+                    layer.close(index);
+                }).catch(err => console.log(err));
+            });
+        }else{
+
+        }
+    }
+
+    //更新商品上下架
+    $scope.updateMarketable = function (status){
+        let selectIds = $scope.getSelectId();
+        if(selectIds.length===0){
+            layer.msg("请选择要操作的数据!");
+            return;
+        }
+        goodsService.updateMarketable(selectIds,status).then(function(res){
+            layer.msg(res.data.message);
+            if(res.data.success){
+                $scope.reloadList();
+            }
+            layer.close(index);
+        }).catch(err => console.log(err));
     }
 
 

@@ -18,7 +18,7 @@ app.controller('typeTemplateController', function($scope,$controller,brandServic
         });
     }
 
-    //查询品牌列表-分页
+    //查询列表-分页
     $scope.getListPage = function(page, size) {
         typeTemplateService.findPage.then(function(res) {
             $scope.list = res.data.rows; //当前页数据
