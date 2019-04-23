@@ -7,6 +7,7 @@ app.controller('sellerController', function($scope,$controller,sellerService,$ti
     $controller('baseController',{$scope:$scope});//继承
 
     $scope.isAgree = true;
+
     //数据验证
     $scope.validate = {
         rules: {

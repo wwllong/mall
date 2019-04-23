@@ -337,5 +337,7 @@
 		<module>mall-goods-service</module>
 		<module>mall-manager-web</module>
 		<module>mall-shop-web</module>
+		<module>mall-content-interface</module>
+		<module>mall-content-service</module>
 	</modules>
 </project>
