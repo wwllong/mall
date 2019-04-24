@@ -339,5 +339,6 @@
 		<module>mall-shop-web</module>
 		<module>mall-content-interface</module>
 		<module>mall-content-service</module>
-	</modules>
+        <module>mall-portal-web</module>
+    </modules>
 </project>

@@ -30,7 +30,7 @@ public class Content implements Serializable {
     /** 图片地址*/
     private String pic;
 
-    /** 状态*/
+    /** 状态 (0 禁用，1 启用)*/
     private String status;
 
     /** 排序*/

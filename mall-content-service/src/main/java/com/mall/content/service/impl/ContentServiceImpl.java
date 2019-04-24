@@ -81,4 +81,14 @@ public class ContentServiceImpl implements ContentService {
 		}
 	}
 
+	@Override
+	public void updateStatus(Long[] ids, String status) {
+		Content content = new Content();
+		content.setStatus(status);
+		for(Long id : ids){
+			content.setId(id);
+			contentMapper.updateByPrimaryKeySelective(content);
+		}
+	}
+
 }
