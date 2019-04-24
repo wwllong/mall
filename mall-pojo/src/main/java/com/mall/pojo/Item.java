@@ -1,10 +1,13 @@
 package com.mall.pojo;
 
 import lombok.Data;
+import org.apache.solr.client.solrj.beans.Field;
+import org.springframework.data.solr.core.mapping.Dynamic;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @author Jack Wen.
@@ -17,15 +20,20 @@ import java.util.Date;
 @Data
 public class Item implements Serializable {
 
+    private static final long serialVersionUID = 3147399576278674226L;
+
+    @Field
     private Long id;
 
     /** 商品标题*/
+    @Field("item_title")
     private String title;
 
     /** 商品卖点*/
     private String sellPoint;
 
     /** 商品价格，元*/
+    @Field("item_price")
     private BigDecimal price;
 
     /** 存货数量*/
@@ -38,6 +46,7 @@ public class Item implements Serializable {
     private String barcode;
 
     /** 商品图片，第一张*/
+    @Field("item_image")
     private String image;
 
     /** 商品所属类目，叶子目录*/
@@ -65,6 +74,7 @@ public class Item implements Serializable {
     private String isDefault;
 
     /** 所属的SPU*/
+    @Field("item_goodsid")
     private Long goodsId;
 
     /** 卖家ID*/
@@ -73,17 +83,24 @@ public class Item implements Serializable {
     private String cartThumbnail;
 
     /** 分类名称*/
+    @Field("item_category")
     private String category;
 
     /** 品牌名称*/
+    @Field("item_brand")
     private String brand;
 
     /** SKU部分描述*/
     private String spec;
 
     /** 商家名称*/
+    @Field("item_seller")
     private String seller;
 
-    private static final long serialVersionUID = 1L;
+    /** 规格动态域*/
+    @Dynamic
+    @Field("item_spec_*")
+    private Map<String,String> specMap;
+
 
 }

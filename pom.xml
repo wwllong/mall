@@ -182,7 +182,7 @@
 				<groupId>commons-fileupload</groupId>
 				<artifactId>commons-fileupload</artifactId>
 				<version>${commons-fileupload.version}</version>
-			</dependency>		
+			</dependency>
 			<!-- 缓存 -->
 			<dependency> 
 			  <groupId>redis.clients</groupId> 
@@ -243,7 +243,7 @@
 		            </exclusion>  
 		        </exclusions>  
 		    </dependency> 	    
-		    <!-- solr客户端 -->
+		    <!-- solr -->
 			<dependency>
 				<groupId>org.apache.solr</groupId>
 				<artifactId>solr-solrj</artifactId>
@@ -340,5 +340,6 @@
 		<module>mall-content-interface</module>
 		<module>mall-content-service</module>
         <module>mall-portal-web</module>
-    </modules>
+		<module>mall-solr-util</module>
+	</modules>
 </project>
