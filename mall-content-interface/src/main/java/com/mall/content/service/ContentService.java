@@ -66,4 +66,11 @@ public interface ContentService {
 	 */
 	public void updateStatus(Long[] ids,String status);
 
+    /**
+     * 根据广告分类ID查询列表
+     * @param categoryId
+     * @return
+     */
+    public List<Content> findByCategoryId(Long categoryId);
+
 }
