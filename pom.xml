@@ -341,5 +341,8 @@
 		<module>mall-content-service</module>
         <module>mall-portal-web</module>
 		<module>mall-solr-util</module>
+		<module>mall-search-interface</module>
+		<module>mall-search-service</module>
+		<module>mall-search-web</module>
 	</modules>
 </project>
