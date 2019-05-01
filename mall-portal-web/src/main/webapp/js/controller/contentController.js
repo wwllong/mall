@@ -7,6 +7,8 @@ app.controller("contentController",function ($scope,contentService) {
     //内容列表
     $scope.contentList = [];
 
+    $scope.keywords = '';
+
     //根据分类ID查询广告列表
     $scope.findByCategoryId = function (categoryId) {
         contentService.findByCategoryId(categoryId).then( (res) => {
@@ -14,5 +16,11 @@ app.controller("contentController",function ($scope,contentService) {
         })
         .catch((err) => (console.log(err)));
     }
+
+    //搜索
+    $scope.search=function(){
+        location.href="http://localhost:9104/search.html?keywords="+$scope.keywords;
+    }
+
 
 });

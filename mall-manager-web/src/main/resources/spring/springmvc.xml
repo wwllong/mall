@@ -10,6 +10,11 @@
         http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <!-- dubbo 配置 -->
+    <dubbo:application name="${dubbo.application.name}"/>
+    <dubbo:registry address="${dubbo.registry.address}"/>
+    <dubbo:annotation package="com.mall.manager.controller"/>
+
     <context:component-scan base-package="com.mall.manager.controller"/>
 
     <context:property-placeholder location="classpath:config/application.properties"/>
@@ -27,11 +32,6 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-
-    <!-- dubbo 配置 -->
-    <dubbo:application name="${dubbo.application.name}"/>
-    <dubbo:registry address="${dubbo.registry.address}"/>
-    <dubbo:annotation package="com.mall.manager.controller"/>
 
     <!-- 配置多媒体解析器 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

@@ -30,7 +30,7 @@ public class ItemSearchController {
      */
     @RequestMapping("/search")
     public Map<String,Object> search(@RequestBody Map searchMap){
-         return itemSearchService.serach(searchMap);
+         return itemSearchService.search(searchMap);
     }
 
 }

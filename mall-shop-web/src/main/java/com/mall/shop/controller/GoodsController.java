@@ -2,7 +2,9 @@ package com.mall.shop.controller;
 
 import com.mall.goods.service.GoodsService;
 import com.mall.pojo.Goods;
+import com.mall.pojo.Item;
 import com.mall.pojogroup.GoodsGroup;
+import com.mall.search.service.ItemSearchService;
 import common.pojo.PageResult;
 import common.pojo.Result;
 import org.apache.dubbo.config.annotation.Reference;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,6 +28,9 @@ public class GoodsController {
 
     @Reference
     private GoodsService goodsService;
+
+    @Reference
+    private ItemSearchService itemSearchService;
 
     /**
      * 新增
@@ -65,6 +72,18 @@ public class GoodsController {
         }
         try {
             goodsService.update(goodsGroup);
+            //商品审核通过，更新solr索引库
+            if(goodsGroup.getGoods().getAuditStatus().equals("1")){
+                Long[] ids = new Long[1];
+                ids[0] = goodsGroup.getGoods().getId();
+                //删除原有索引
+                itemSearchService.deleteByGoodsIds(Arrays.asList(ids));
+                //批量导入
+                List<Item> itemList = goodsService.findItemListByGoodsIdAndStatus(ids, "1");
+                if(itemList.size()>0){
+                    itemSearchService.importList(itemList);
+                }
+            }
             return Result.ADMIN_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();

@@ -57,4 +57,6 @@ public class SolrUtil {
         SolrUtil solrUtil = (SolrUtil)context.getBean("solrUtil");
         solrUtil.importItemData();
     }
+
+
 }

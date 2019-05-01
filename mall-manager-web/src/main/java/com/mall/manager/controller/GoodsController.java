@@ -2,7 +2,9 @@ package com.mall.manager.controller;
 
 import com.mall.goods.service.GoodsService;
 import com.mall.pojo.Goods;
+import com.mall.pojo.Item;
 import com.mall.pojogroup.GoodsGroup;
+import com.mall.search.service.ItemSearchService;
 import common.pojo.PageResult;
 import common.pojo.Result;
 import org.apache.dubbo.config.annotation.Reference;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,6 +27,9 @@ public class GoodsController {
 
     @Reference
     private GoodsService goodsService;
+
+    @Reference
+    private ItemSearchService itemSearchService;
 
     /**
      * 新增
@@ -129,6 +135,7 @@ public class GoodsController {
     public Result delete(Long[] ids) {
         try {
             goodsService.delete(ids);
+            itemSearchService.deleteByGoodsIds(Arrays.asList(ids));
             return Result.ADMIN_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,6 +153,14 @@ public class GoodsController {
     public Result updateStatus(Long[] ids,String status) {
         try {
             goodsService.updateStatus(ids,status);
+            //更新索引库
+            if("1".equals(status)){
+                List<Item> itemList = goodsService.findItemListByGoodsIdAndStatus(ids, status);
+                //批量导入
+                if(itemList.size()>0){
+                    itemSearchService.importList(itemList);
+                }
+            }
             return Result.ADMIN_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();

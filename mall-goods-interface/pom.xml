@@ -11,6 +11,12 @@
   		<groupId>com.mall</groupId>
   		<artifactId>mall-pojo</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
+        <exclusions>
+            <exclusion>
+                <artifactId>commons-io</artifactId>
+                <groupId>commons-io</groupId>
+            </exclusion>
+        </exclusions>
+    </dependency>
   </dependencies>
 </project>

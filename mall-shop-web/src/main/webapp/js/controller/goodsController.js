@@ -117,6 +117,9 @@ app.controller('goodsController', function($scope,$controller,goodsService,uploa
     //回显规格属性-根据规格名称和选项名称返回是否被勾选
     $scope.checkAttrValue = function(attrName,attrValue){
         let specItems = $scope.goodsGroup.goodsDesc.specificationItems;
+        if(specItems==null){
+            specItems = $scope.goodsGroup.goodsDesc.specificationItems = [];
+        }
         let item = $scope.searchObjectByKey(specItems,'attributeName',attrName);
         if(item == null){
             return false;

@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/itemCatalog")
 public class ItemCatalogController {
 
-    @Reference
+    @Reference(timeout = 5000)
     private ItemCatalogService itemCatalogService;
 
     /**

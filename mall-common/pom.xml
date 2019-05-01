@@ -26,6 +26,20 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-redis</artifactId>
+        <exclusions>
+            <exclusion>
+                <artifactId>spring-core</artifactId>
+                <groupId>org.springframework</groupId>
+            </exclusion>
+          <exclusion>
+            <artifactId>spring-aop</artifactId>
+            <groupId>org.springframework</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>spring-tx</artifactId>
+            <groupId>org.springframework</groupId>
+          </exclusion>
+        </exclusions>
     </dependency>
 
   </dependencies>

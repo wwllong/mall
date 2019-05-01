@@ -11,10 +11,14 @@ import com.mall.utils.StringUtils;
 import common.pojo.PageResult;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.test.context.transaction.AfterTransaction;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
+
 
 /**
  * 商品目录服务实现
@@ -29,14 +33,19 @@ public class ItemCatalogServiceImpl implements ItemCatalogService {
 	@Autowired
 	private ItemCatalogMapper itemCatalogMapper;
 
+	@Autowired
+	private RedisTemplate redisTemplate;
+
 	@Override
 	public void add(ItemCatalog itemCatalog) {
 		itemCatalogMapper.insert(itemCatalog);
+		saveToRedis();
 	}
 
 	@Override
 	public void update(ItemCatalog itemCatalog) {
 		itemCatalogMapper.updateByPrimaryKey(itemCatalog);
+		saveToRedis();
 	}
 
 	@Override
@@ -78,14 +87,31 @@ public class ItemCatalogServiceImpl implements ItemCatalogService {
 		for(Long id : ids){
 			itemCatalogMapper.deleteByPrimaryKey(id);
 		}
+		saveToRedis();
 	}
 
 	@Override
+	@Transactional(propagation= Propagation.NOT_SUPPORTED)
 	public List<ItemCatalog> findByParentId(Long id) {
 		ItemCatalogExample example = new ItemCatalogExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andParentIdEqualTo(id);
+		//缓存模板的品牌和规格列表
+		if(redisTemplate.boundHashOps("itemCatalog").size()==0){
+			saveToRedis();
+		}
 		return itemCatalogMapper.selectByExample(example);
 	}
+
+	/**
+	 * 缓存模板的品牌和规格列表
+	 */
+	private void saveToRedis(){
+		//缓存分类数据 itemCatalog：[{商品分类名称:模板ID}]
+		for (ItemCatalog itemCatalog : findAll()){
+			redisTemplate.boundHashOps("itemCatalog").put(itemCatalog.getName(),itemCatalog.getTypeId());
+		}
+	}
+
 
 }

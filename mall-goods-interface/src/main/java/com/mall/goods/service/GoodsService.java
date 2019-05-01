@@ -1,6 +1,7 @@
 package com.mall.goods.service;
 
 import com.mall.pojo.Goods;
+import com.mall.pojo.Item;
 import com.mall.pojogroup.GoodsGroup;
 import common.pojo.PageResult;
 
@@ -74,4 +75,12 @@ public interface GoodsService {
 	 */
 	public void updateStatus(Long[] ids,String status);
 
+
+	/**
+	 * 根据商品Id和商品状态查询SKU列表
+	 * @param goodsId 商品SPU id
+	 * @param status 商品状态
+	 * @return
+	 */
+	public List<Item> findItemListByGoodsIdAndStatus(Long[] goodsId,String status);
 }

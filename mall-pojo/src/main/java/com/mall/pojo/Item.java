@@ -59,6 +59,7 @@ public class Item implements Serializable {
     private Date createTime;
 
     /** 更新时间*/
+    @Field("item_updatetime")
     private Date updateTime;
 
     /** */

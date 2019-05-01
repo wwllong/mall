@@ -15,6 +15,7 @@ import com.mall.utils.StringUtils;
 import common.pojo.PageResult;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -35,14 +36,19 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 	@Autowired
 	private SpecificationOptionMapper specificationOptionMapper;
 
+	@Autowired
+	private RedisTemplate redisTemplate;
+
 	@Override
 	public void add(TypeTemplate typeTemplate) {
 		typeTemplateMapper.insert(typeTemplate);
+		saveToRedis();
 	}
 
 	@Override
 	public void update(TypeTemplate typeTemplate) {
 		typeTemplateMapper.updateByPrimaryKey(typeTemplate);
+		saveToRedis();
 	}
 
 	@Override
@@ -76,6 +82,10 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 			}
 		}
 		Page<TypeTemplate> page = (Page<TypeTemplate>)typeTemplateMapper.selectByExample(example);
+		//缓存品牌和规格列表
+		if(redisTemplate.boundHashOps("brandList").size()==0 || redisTemplate.boundHashOps("specList").size()==0 ){
+			saveToRedis();
+		}
 		return new PageResult(page.getTotal(),page.getResult());
 	}
 
@@ -84,6 +94,7 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 		for(Long id : ids){
 			typeTemplateMapper.deleteByPrimaryKey(id);
 		}
+		saveToRedis();
 	}
 
 	@Override
@@ -98,14 +109,7 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 		//JSON字符串转换
 		List<Map> list = JSON.parseArray(typeTemplate.getSpecIds(), Map.class);
 
-//		for(Map map : list){
-//			// 查询规格选项列表
-//			SpecificationOptionExample example = new SpecificationOptionExample();
-//			SpecificationOptionExample.Criteria criteria = example.createCriteria();
-//			criteria.andSpecIdEqualTo(Long.parseLong(map.get("id").toString()));
-//			List<SpecificationOption> options = specificationOptionMapper.selectByExample(example);
-//			map.put("options",options);
-//		}
+		// 查询规格选项列表
 		list.forEach( map -> {
 			SpecificationOptionExample example = new SpecificationOptionExample();
 			SpecificationOptionExample.Criteria criteria = example.createCriteria();
@@ -115,6 +119,22 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 		});
 
 		return list;
+	}
+
+	/**
+	 * 缓存模板的品牌和规格列表
+	 */
+	private void saveToRedis(){
+		for(TypeTemplate typeTemplate : findAll()){
+			Long typeId = typeTemplate.getId();
+			//缓存品牌 brandList：[{typeID : [{id,text}] }]
+			List<Map> brandList = JSON.parseArray(typeTemplate.getBrandIds(), Map.class);
+			redisTemplate.boundHashOps("brandList").put(typeId,brandList);
+			//缓存规格 specList：[{typeID : [{id,text,[options]}] }]
+			List<Map> specList = findSpecListWithOptions(typeId);
+			redisTemplate.boundHashOps("specList").put(typeId,specList);
+		}
+
 	}
 
 }
