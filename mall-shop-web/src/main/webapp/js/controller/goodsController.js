@@ -241,7 +241,7 @@ app.controller('goodsController', function($scope,$controller,goodsService,uploa
         if(newValue === null){
             //清空模板和扩展属性(自定义属性）
             $scope.typeTemplate = {};
-            $scope.goodsGroup.goodsDesc.customAttributeItems = {};
+            $scope.goodsGroup.goodsDesc.customAttributeItems = [];
             return;
         }
         typeTemplateService.findOne(newValue).then( (res) => {

@@ -1,6 +1,7 @@
 package com.mall.manager.controller;
 
 import com.mall.goods.service.GoodsService;
+import com.mall.page.service.ItemPageService;
 import com.mall.pojo.Goods;
 import com.mall.pojo.Item;
 import com.mall.pojogroup.GoodsGroup;
@@ -30,6 +31,9 @@ public class GoodsController {
 
     @Reference
     private ItemSearchService itemSearchService;
+
+    @Reference(timeout = 5000)
+    private ItemPageService itemPageService;
 
     /**
      * 新增
@@ -161,12 +165,22 @@ public class GoodsController {
                     itemSearchService.importList(itemList);
                 }
             }
+            //生成静态页面
+            for(Long id : ids){
+                itemPageService.genItemHtml(id);
+            }
             return Result.ADMIN_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
             return Result.ADMIN_ERROR;
         }
     }
+
+    @RequestMapping("/genHtml")
+    public void genHtml(Long goodsId){
+        itemPageService.genItemHtml(goodsId);
+    }
+
 
 
 }

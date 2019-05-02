@@ -349,5 +349,8 @@
 		<module>mall-search-interface</module>
 		<module>mall-search-service</module>
 		<module>mall-search-web</module>
-	</modules>
+		<module>mall-page-interface</module>
+		<module>mall-page-service</module>
+        <module>mall-page-web</module>
+    </modules>
 </project>
