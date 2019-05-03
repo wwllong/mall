@@ -22,25 +22,25 @@
     </filter-mapping>
 
     <servlet>
-        <servlet-name>springmvc</servlet-name>
+        <servlet-name>spring-mvc</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <!-- 指定加载的配置文件 ，通过参数contextConfigLocation加载-->
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:spring/springmvc.xml</param-value>
+            <param-value>classpath:spring/spring-mvc.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>springmvc</servlet-name>
+        <servlet-name>spring-mvc</servlet-name>
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
 
     <!-- SpringSecurity -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring/spring-security.xml</param-value>
+        <param-value>classpath:spring/spring-*.xml</param-value>
     </context-param>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

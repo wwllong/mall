@@ -1,20 +1,21 @@
 package com.mall.shop.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.mall.goods.service.GoodsService;
 import com.mall.pojo.Goods;
 import com.mall.pojo.Item;
 import com.mall.pojogroup.GoodsGroup;
-import com.mall.search.service.ItemSearchService;
 import common.pojo.PageResult;
 import common.pojo.Result;
 import org.apache.dubbo.config.annotation.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import javax.jms.Destination;
 import java.util.List;
 
 /**
@@ -29,8 +30,25 @@ public class GoodsController {
     @Reference
     private GoodsService goodsService;
 
-    @Reference
-    private ItemSearchService itemSearchService;
+    /** 添加索引，消息队列*/
+    @Autowired
+    private Destination queueSolrDestination;
+
+    /** 删除索引，消息队列*/
+    @Autowired
+    private Destination queueSolrDeleteDestination;
+
+    /** 生成静态页面，消息主题*/
+    @Autowired
+    private Destination topicPageDestination;
+
+    /** 删除静态页面，消息主题*/
+    @Autowired
+    private Destination topicPageDeleteDestination;
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
 
     /**
      * 新增
@@ -76,12 +94,13 @@ public class GoodsController {
             if(goodsGroup.getGoods().getAuditStatus().equals("1")){
                 Long[] ids = new Long[1];
                 ids[0] = goodsGroup.getGoods().getId();
-                //删除原有索引
-                itemSearchService.deleteByGoodsIds(Arrays.asList(ids));
-                //批量导入
+                //发送删除原有索引消息
+                jmsTemplate.send(queueSolrDeleteDestination, session -> session.createObjectMessage(ids));
+                //发送批量导入消息
                 List<Item> itemList = goodsService.findItemListByGoodsIdAndStatus(ids, "1");
                 if(itemList.size()>0){
-                    itemSearchService.importList(itemList);
+                    String jsonStr = JSON.toJSONString(itemList);
+                    jmsTemplate.send(queueSolrDestination, session -> session.createTextMessage(jsonStr));
                 }
             }
             return Result.ADMIN_SUCCESS;

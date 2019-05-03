@@ -1,20 +1,25 @@
 package com.mall.manager.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.mall.goods.service.GoodsService;
-import com.mall.page.service.ItemPageService;
 import com.mall.pojo.Goods;
 import com.mall.pojo.Item;
 import com.mall.pojogroup.GoodsGroup;
-import com.mall.search.service.ItemSearchService;
 import common.pojo.PageResult;
 import common.pojo.Result;
 import org.apache.dubbo.config.annotation.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 import java.util.List;
 
 /**
@@ -29,11 +34,25 @@ public class GoodsController {
     @Reference
     private GoodsService goodsService;
 
-    @Reference
-    private ItemSearchService itemSearchService;
+    /** 添加索引，消息队列*/
+    @Autowired
+    private Destination queueSolrDestination;
 
-    @Reference(timeout = 5000)
-    private ItemPageService itemPageService;
+    /** 删除索引，消息队列*/
+    @Autowired
+    private Destination queueSolrDeleteDestination;
+
+    /** 生成静态页面，消息主题*/
+    @Autowired
+    private Destination topicPageDestination;
+
+    /** 删除静态页面，消息主题*/
+    @Autowired
+    private Destination topicPageDeleteDestination;
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
 
     /**
      * 新增
@@ -47,7 +66,6 @@ public class GoodsController {
             //获取登陆名称
             String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
             goodsGroup.getGoods().setSellerId(sellerId);
-
             goodsService.add(goodsGroup);
 
             return Result.ADMIN_SUCCESS;
@@ -139,7 +157,10 @@ public class GoodsController {
     public Result delete(Long[] ids) {
         try {
             goodsService.delete(ids);
-            itemSearchService.deleteByGoodsIds(Arrays.asList(ids));
+            //消息生产者-发送删除索引消息
+            jmsTemplate.send(queueSolrDeleteDestination, session -> session.createObjectMessage(ids));
+            //消息生产者-发送删除静态页面的消息
+            jmsTemplate.send(topicPageDeleteDestination, session -> session.createObjectMessage(ids));
             return Result.ADMIN_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -160,25 +181,21 @@ public class GoodsController {
             //更新索引库
             if("1".equals(status)){
                 List<Item> itemList = goodsService.findItemListByGoodsIdAndStatus(ids, status);
-                //批量导入
+                //批量导入Solr
                 if(itemList.size()>0){
-                    itemSearchService.importList(itemList);
+                    String jsonStr = JSON.toJSONString(itemList);
+                    //消息生产者-发送导入数据消息
+                    jmsTemplate.send(queueSolrDestination, session -> session.createTextMessage(jsonStr));
                 }
             }
-            //生成静态页面
-            for(Long id : ids){
-                itemPageService.genItemHtml(id);
-            }
+            //消息生产者-发送静态页面消息,生成静态页面
+            jmsTemplate.send(topicPageDestination, session -> session.createObjectMessage(ids));
+
             return Result.ADMIN_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
             return Result.ADMIN_ERROR;
         }
-    }
-
-    @RequestMapping("/genHtml")
-    public void genHtml(Long goodsId){
-        itemPageService.genItemHtml(goodsId);
     }
 
 

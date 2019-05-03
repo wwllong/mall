@@ -8,11 +8,12 @@ import com.mall.page.service.ItemPageService;
 import com.mall.pojo.*;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -26,7 +27,8 @@ import java.util.Map;
  * @data 2019/5/1
  * @vserion 1.0
  */
-@Service
+
+@Component
 public class ItemPageServiceImpl implements ItemPageService {
 
     @Value("${pagedir}")
@@ -83,6 +85,22 @@ public class ItemPageServiceImpl implements ItemPageService {
             fileWriter.close();
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 删除静态页
+     * @param goodsId 商品SPU Id
+     * @return
+     */
+    @Override
+    public boolean deleteItemHtml(Long goodsId) {
+        try {
+            new File(pagedir+goodsId+".html").delete();
+            return true;
+        }catch (Exception e){
             e.printStackTrace();
             return false;
         }

@@ -15,4 +15,5 @@
     <dubbo:application name="${dubbo.application.name}"/>
     <dubbo:registry address="${dubbo.registry.address}" client="${dubbo.registry.client}" timeout="${dubbo.registry.timeout}"/>
     <dubbo:annotation package="com.mall.search.service.impl"/>
+
 </beans>
