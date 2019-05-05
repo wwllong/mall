@@ -54,7 +54,6 @@ app.controller('userController', function($scope,userService,$timeout) {
             return;
         }
         if($scope.timing == 60){
-            console.log(1);
             userService.sendCode($scope.user.phone);
             $scope.countDown($scope.timing);
         }else{
