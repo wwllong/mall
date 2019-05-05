@@ -81,6 +81,7 @@
 				<artifactId>spring-test</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
+
 			<!-- dubbo相关 -->
 			<dependency>
 				<groupId>org.apache.dubbo</groupId>
@@ -108,6 +109,14 @@
 				<artifactId>curator-recipes</artifactId>
 				<version>${curator.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.curator</groupId>
+				<artifactId>curator-client</artifactId>
+				<version>${curator.version}</version>
+			</dependency>
+
+
+
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
@@ -352,5 +361,8 @@
 		<module>mall-page-interface</module>
 		<module>mall-page-service</module>
         <module>mall-page-web</module>
-    </modules>
+        <module>mall-user-interface</module>
+		<module>mall-user-service</module>
+		<module>mall-user-web</module>
+	</modules>
 </project>
