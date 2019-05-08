@@ -10,9 +10,15 @@
         http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <context:property-placeholder location="classpath:config/application.properties"/>
+
+    <!-- dubbo 配置 -->
+    <dubbo:application name="${dubbo.application.name}"/>
+    <dubbo:registry address="${dubbo.registry.address}"/>
+    <dubbo:annotation package="com.mall.portal.controller"/>
+
     <context:component-scan base-package="com.mall.portal.controller"/>
 
-    <context:property-placeholder location="classpath:config/application.properties"/>
     <!--转换器 -->
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
@@ -27,10 +33,5 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-
-    <!-- dubbo 配置 -->
-    <dubbo:application name="${dubbo.application.name}"/>
-    <dubbo:registry address="${dubbo.registry.address}"/>
-    <dubbo:annotation package="com.mall.portal.controller"/>
 
 </beans>

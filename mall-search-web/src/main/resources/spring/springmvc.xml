@@ -13,7 +13,7 @@
     <!-- dubbo 配置 -->
     <dubbo:application name="${dubbo.application.name}"/>
     <dubbo:registry address="${dubbo.registry.address}"/>
-    <dubbo:annotation package="com.mall.portal.controller"/>
+    <dubbo:annotation package="com.mall.search.controller"/>
 
     <context:component-scan base-package="com.mall.search.controller"/>
 
