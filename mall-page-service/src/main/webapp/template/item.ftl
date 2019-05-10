@@ -159,7 +159,7 @@
                         <div class="fl">
                             <ul class="btn-choose unstyled">
                                 <li>
-                                    <a href="cart.html" target="_blank" class="sui-btn  btn-danger addshopcar" ng-click="add2Cart()">加入购物车</a>
+                                    <a class="sui-btn  btn-danger addshopcar" ng-click="add2Cart()">加入购物车</a>
                                 </li>
                             </ul>
                         </div>
@@ -593,7 +593,6 @@
 <script type="text/javascript" src="js/plugins/sui/sui.min.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.jqzoom/jquery.jqzoom.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.jqzoom/zoom.js"></script>
-<script type="text/javascript" src="index/index.js"></script>
 
 <script type="text/javascript" src="plugins/angularjs/angular.min.js">  </script>
 <script type="text/javascript" src="js/common/base.js">  </script>

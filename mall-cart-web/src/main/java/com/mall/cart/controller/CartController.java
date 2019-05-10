@@ -8,6 +8,7 @@ import common.pojo.Result;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,7 +43,13 @@ public class CartController {
      * @return
      */
     @RequestMapping("/addGoods2CarList")
+    @CrossOrigin(origins = "http://localhost:9105")
     public Result addGoods2CarList(Long itemId, Integer num) {
+//        //CORS-跨域资源共享 跨域请求设置
+//        response.setHeader("Access-Control-Allow-Origin", "http://localhost:9105");
+//        //允许携带凭证，方法中操作了cookie,需要加上该响应头
+//        response.setHeader("Access-Control-Allow-Credentials", "true");
+
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         //1.从 Cookie/Redis 获取购物车列表
         List<Cart> cartList = findCartList();

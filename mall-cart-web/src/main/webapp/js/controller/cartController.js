@@ -2,7 +2,7 @@
  * 购物车服务控制层
  * Created by Wwl on 2019/3/4
  */
-app.controller('cartController', function($scope,$controller,cartService) {
+app.controller('cartController', function($scope,$controller,cartService,$cookies,$timeout) {
 
     $controller('baseController',{$scope:$scope});//继承
 
@@ -131,7 +131,7 @@ app.controller('cartController', function($scope,$controller,cartService) {
     //删除选中的商品
     $scope.deletes = function () {
         //获取要删除的itemd对象
-        let delItemList = cartService.delItems($scope.cartList);
+        let delItemList = cartService.getSelectItems($scope.cartList);
         if(delItemList.length==0){
             layer.msg("请选择宝贝");
             return;
@@ -142,8 +142,152 @@ app.controller('cartController', function($scope,$controller,cartService) {
             });
             layer.close(index);
         });
-
     }
+
+    //结算，生成订单信息
+    $scope.creatOrderInfo = function(){
+        //获取要购买的购物车项
+        let payItemList = cartService.getSelectItems($scope.cartList);
+        if(payItemList.length==0){
+            layer.msg("你还没有选择宝贝");
+            return;
+        }
+        // 将要购买的购物车项存放在cookie
+        let curTime = new Date();
+        $cookies.put("payCartList",JSON.stringify(payItemList),{
+            //设置过期时间-10分钟
+            expires:  new Date(curTime.setMinutes(curTime.getMinutes() + 10))
+        });
+        location.href="getOrderInfo.html";
+    }
+
+    /**====结算页相关开始====**/
+    //获取用户收货地址
+    $scope.findAddressList = function () {
+        cartService.findAddressList().then( (res)=>{
+            $scope.addressList = res.data;
+            $scope.addressList.forEach( address => {
+                if(address.isDefault==='1'){
+                    $scope.address = address;
+                    return;
+                }
+            })
+        }).catch( (err)=>console.log(err) );
+    }
+
+    //选中地址
+    $scope.selectAddress = function (address) {
+        $scope.address = address;
+    }
+
+    //判断是否当前选中的地址
+    $scope.isSelectAddress = function (address) {
+        return (address === $scope.address) ? true : false;
+    }
+
+    //编辑的收货地址实体
+    $scope.entity = {};
+
+    //保存收货地址
+    $scope.save = function(){
+        if($scope.entity.contact==null || $scope.entity.address==null || $scope.entity.address==null || $scope.entity.mobile==null){
+            layer.msg("请填写必要的信息");
+            return;
+        }
+        let serviceObj;
+        if($scope.entity.id != null){
+            serviceObj = cartService.update($scope.entity);
+        }else{
+            serviceObj = cartService.add($scope.entity);
+        }
+        serviceObj.then(function(res){
+            angular.element("#editDialog").modal('hide');
+            layer.msg(res.data.message);
+            if(res.data.success){
+                $scope.findAddressList();
+            }
+        }).catch(err => console.log(err));
+    }
+
+    //设置别名
+    $scope.setAlias = function (alias) {
+        $scope.entity.alias = alias;
+    }
+
+    //查找地址
+    $scope.findAddress = function (id) {
+        cartService.findOne(id).then( (res)=>{
+            $scope.entity = res.data;
+        }).catch( (err)=>console.log(err) );
+    }
+
+    //删除地址
+    $scope.deleteAddress = function (id) {
+        layer.confirm("你确定要删除该地址吗？", {icon: 3, title:"提示信息"}, function(index){
+            cartService.delete(id).then( (res)=>{
+                layer.msg(res.data.message);
+                if(res.data.success){
+                    $scope.findAddressList();
+                }
+            }).catch( (err)=>console.log(err) );
+            layer.close(index);
+        });
+    }
+
+    //订单对象
+    $scope.order={paymentType:'1'};
+
+    //选择支付方式
+    $scope.selectPayType=function(type){
+        $scope.order.paymentType= type;
+    }
+
+    //获取支付购物车信息
+    $scope.getOrderInfo = function(){
+        let payCartListStr = $cookies.get("payCartList");
+        if(payCartListStr==null){
+            layer.msg("订单失效,即将跳转购物车");
+            $timeout(function () {
+                window.location.href="http://localhost:9107/cart.html";
+            },3000);
+            return;
+        }
+        cartService.getOrderCartList(JSON.parse(payCartListStr)).then( (res) =>{
+            $scope.payCartList = res.data;
+        }).then((res)=>{
+            $scope.payTotalValue = cartService.getPayCartListSum($scope.payCartList);
+        }).catch( (err)=>console.log(err) );
+    }
+
+    //提交订单
+    $scope.submitOrder = function () {
+        if($scope.payCartList==null){
+            layer.msg("订单失效,请重新提交订单");
+            return;
+        }
+        $scope.order.receiverAreaName=$scope.address.address;//地址
+        $scope.order.receiverMobile=$scope.address.mobile;//手机
+        $scope.order.receiver=$scope.address.contact;//联系人
+        cartService.submitOrder({order:$scope.order,payCartList:$scope.payCartList}).then( (res) =>{
+            if(res.data.success){
+                //页面跳转
+                if($scope.order.paymentType=='1'){
+                    //微信支付
+                    location.href="pay.html";
+                    //清除订单Cookie缓存
+                    $cookies.remove("payCartList");
+                }else{
+                    //货到付款，跳转到提示页面
+                    location.href="paysuccess.html";
+                }
+            }else{
+                layer.msg(res.data.message);
+            }
+        }).catch( (err)=>console.log(err) );
+    }
+
+    /**====结算页相关结束====**/
+
 
 
 });

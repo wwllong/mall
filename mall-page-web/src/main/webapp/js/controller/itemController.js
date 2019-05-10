@@ -2,7 +2,7 @@
  * 商品详细页-商品SKU控制层
  * Created by Wwl 2019/4/24
  */
-app.controller("itemController",function ($scope) {
+app.controller("itemController",function ($scope,$http) {
 
     //商品数量
     $scope.num = 1;
@@ -67,8 +67,11 @@ app.controller("itemController",function ($scope) {
 
     //添加购物车
     $scope.add2Cart = () =>{
-        alert("skuId"+$scope.sku.id);
+        //跨域操作cookie，需要携带凭证
+        $http.get('http://localhost:9107/cart/addGoods2CarList.do?itemId='+
+            $scope.sku.id+'&num='+$scope.num,{'withCredentials':true}).then( (res) =>{
+                location.href='http://localhost:9107/cart.html';
+        }).catch((err) => {console.log(err)});
     }
-
 
 });

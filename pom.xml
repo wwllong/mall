@@ -367,5 +367,8 @@
 		<module>mall-cart-interface</module>
 		<module>mall-cart-service</module>
 		<module>mall-cart-web</module>
+        <module>mall-order-interface</module>
+		<module>mall-order-interface</module>
+		<module>mall-order-service</module>
 	</modules>
 </project>

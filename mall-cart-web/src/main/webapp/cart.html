@@ -122,7 +122,7 @@
                     <span><em>总价（不含运费） ：</em><i class="summoney"></i>¥{{totalValue.totalPrices.toFixed(2)}}</span>
                 </div>
                 <div class="sumbtn">
-                    <a class="sum-btn" href="getOrderInfo.html" target="_blank">结算</a>
+                    <a class="sum-btn" target="_blank" ng-click="creatOrderInfo()">结算</a>
                 </div>
             </div>
         </div>
@@ -425,6 +425,7 @@
 <script type="text/javascript" src="js/widget/nav.js"></script>
 
 <script type="text/javascript" src="plugins/angularjs/angular.min.js"></script>
+<script type="text/javascript" src="plugins/angularjs/angular-cookies.min.js"></script>
 <script type="text/javascript" src="plugins/layer/layer.js"></script>
 <script type="text/javascript" src="js/common/base.js"></script>
 <script type="text/javascript" src="js/service/cartService.js"></script>
